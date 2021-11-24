@@ -1,16 +1,29 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Formulario</title>
 </head>
+
 <body>
-  <p>Mostrar todos los numeros comprendidos entre los dos valores ingresados de uno en uno.</p>
-  <form action="mostrarnumeros" method="post">
-  Ingrese el correo:
-  <input type="text" name="correo" size="10"><br>
-  Ingrese la contraseña:
-  <input type="text" name="contrasena" size="10"><br>
-  <input type="submit" value="entrar">
-</form>
+
+    <div style="background-color: deepskyblue; padding: 10px; height: 100%; ">
+      <div style="background-color:aqua; padding: 10px;margin: 15%;
+      padding: 1rem;
+
+      text-align: center;">
+        <div>Inicio de sesión</div>
+        <form action="mostrarnumeros" method="post">
+          
+          <label for="">Ingrese el correo:</label>
+          <input type="text" name="correo" size="10"><br>
+          <label for="">Ingrese la contraseña:</label>
+          <input type="text" name="contrasena" size="10"><br>
+          <input type="submit" value="entrar">
+      </div>
+
+    </div>
+  </form>
 </body>
+
 </html>
