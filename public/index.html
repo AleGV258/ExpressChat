@@ -6,24 +6,73 @@
 </head>
 
 <body>
-
-    <div style="background-color: deepskyblue; padding: 10px; height: 100%; ">
-      <div style="background-color:aqua; padding: 10px;margin: 15%;
-      padding: 1rem;
-
-      text-align: center;">
-        <div>Inicio de sesión</div>
-        <form action="mostrarnumeros" method="post">
-          
-          <label for="">Ingrese el correo:</label>
-          <input type="text" name="correo" size="10"><br>
-          <label for="">Ingrese la contraseña:</label>
-          <input type="text" name="contrasena" size="10"><br>
-          <input type="submit" value="entrar">
-      </div>
-
+  <div id="is">
+    <div>
+      <h1>Inicio de sesión</h1>
     </div>
-  </form>
+    <form action="mostrarnumeros" method="post">
+      <label for="">Ingrese el correo:</label><br>
+      <input type="email" name="correo" size="10"><br>
+      <label for="">Ingrese la contraseña:</label><br>
+      <input type="password" name="contrasena" size="10"><br>
+      <input type="submit" value="Entrar">
+    </form>
+  </div>
 </body>
+<style>
+  #is {
+    background-color: #0EF4EF;
+    margin-left: 30%;
+    margin-top: 10%;
+    /* padding: 1rem; */
+    width: 40%;
+    text-align: center;
+    border: 3px solid black;
+    height: 60%;
+    border-radius: 5px;
+  }
+
+  input[type=email] {
+    width: 65%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 3px solid black;
+    font-size: 20px;
+    text-align: center;
+  }
+  input[type=password] {
+    width: 60%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 3px solid black;
+    font-size: 20px;
+    text-align: center;
+  }
+
+  input[type=submit] {
+    width: 60%;
+    padding: 12px 20px;
+    margin: 25px;
+    box-sizing: border-box;
+    border-radius: 15px;
+    border: 3px solid black;
+    color: white;
+    background-color: blue;
+    font-size: 25px;
+  }
+
+  label {
+    color: black;
+    font-size: 25px;
+  }
+
+  body {
+    background-color: #91D9F5;
+  }
+</style>
 
 </html>
