@@ -1,41 +1,59 @@
 const express = require('express');
-const app=express();
+const app = express();
+const path = require('path')
 const bodyParser = require('body-parser');
 
 //especificamos el subdirectorio donde se encuentran las páginas estáticas
 app.use(express.static(__dirname + '/public'));
-
+app.set('view engine', 'ejs'); //renderizar paginas con parametros
 //extended: false significa que parsea solo string (no archivos de imagenes por ejemplo)
+
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.post('/mostrarnumeros', (req, res) => {
-  let correo =req.body.correo;
-  let contrasena = req.body.contrasena;
+app.post('/ExpressChat', (req, res) => {
+  //autentificacion
 
-  let pagina='<!doctype html><html><head></head><body>';
+  //tokens para identificar usuario en toda la API
 
-    pagina += `<a href="/mostrartabla?valor=${5}">El correo es ${correo} y la contraseña es ${contrasena}</a> - `;
-    pagina += '</body></html>';
-  res.send(pagina);	
+  //code servible para otras cosas
+  // let correo =req.body.correo;
+  // let contrasena = req.body.contrasena;
+  // let pagina='<!doctype html><html><head></head><body>';
+  //   pagina += `<a href="/mostrartabla?valor=${5}">El correo es ${correo} y la contraseña es ${contrasena}</a> - `;
+  //   pagina += '</body></html>';
+  //res.send(pagina);	
+
+  res.render('chat.ejs')//se pueden agregar parametros res.render('chat.ejs',{algo: algo});
+  //http://expressjs.com/en/api.html#res.render
 })
 
-app.get('/mostrartabla', (req, res) => {
-  let num=req.query.valor;
-  num=parseInt(num);
-  let pagina='<!doctype html><html><head></head><body>';
-  for(let x=1;x<=10;x++) {
-    let tabla=num * x;
+app.get('/resultadosBusqueda', (req, res) => {
+  let num = req.query.valor;
+  num = parseInt(num);
+  let pagina = '<!doctype html><html><head></head><body>';
+  for (let x = 1; x <= 10; x++) {
+    let tabla = num * x;
     pagina += `${num} * ${x} = ${tabla} <br>`;
-  }	
+  }
   pagina += '<a href="index.html">Retornar</a>';
   pagina += '</body></html>';
-  res.send(pagina);	
+  res.send(pagina);
 })
 
 
-var server=app.listen(5000, () => {
+var server = app.listen(5000, () => {
   console.log('Servidor web iniciado');
 });
+
+
+
+
+
+
+
+
+
+
 // net = require('net');
 
 // var tokens, newData, msg;
