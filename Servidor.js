@@ -15,27 +15,31 @@ app.post('/ExpressChat', (req, res) => {
 
   //tokens para identificar usuario en toda la API
 
-  //code servible para otras cosas
-  // let correo =req.body.correo;
-  // let contrasena = req.body.contrasena;
-  // let pagina='<!doctype html><html><head></head><body>';
-  //   pagina += `<a href="/mostrartabla?valor=${5}">El correo es ${correo} y la contraseña es ${contrasena}</a> - `;
-  //   pagina += '</body></html>';
-  //res.send(pagina);	
+      //code servible para otras cosas
+      // let correo =req.body.correo;
+      // let contrasena = req.body.contrasena;
+      // let pagina='<!doctype html><html><head></head><body>';
+      //   pagina += `<a href="/mostrartabla?valor=${5}">El correo es ${correo} y la contraseña es ${contrasena}</a> - `;
+      //   pagina += '</body></html>';
+      //res.send(pagina);	
 
-  res.render('chat.ejs')//se pueden agregar parametros res.render('chat.ejs',{algo: algo});
-  //http://expressjs.com/en/api.html#res.render
+  res.render('chat.ejs')    //se pueden agregar parametros res.render('chat.ejs',{algo: algo});
+        //http://expressjs.com/en/api.html#res.render
 })
 
 app.get('/resultadosBusqueda', (req, res) => {
-  let num = req.query.valor;
-  num = parseInt(num);
+  let usuario = req.query.usuario;
   let pagina = '<!doctype html><html><head></head><body>';
-  for (let x = 1; x <= 10; x++) {
-    let tabla = num * x;
-    pagina += `${num} * ${x} = ${tabla} <br>`;
-  }
-  pagina += '<a href="index.html">Retornar</a>';
+          // let num = req.query.valor;
+          // num = parseInt(num);
+          // let pagina = '<!doctype html><html><head></head><body>';
+          // for (let x = 1; x <= 10; x++) {
+          //   let tabla = num * x;
+          //   pagina += `${num} * ${x} = ${tabla} <br>`;
+          // }
+          // pagina += '<a href="index.html">Retornar</a>';
+          // pagina += '</body></html>';
+  pagina += `El usuario es ${usuario}`;
   pagina += '</body></html>';
   res.send(pagina);
 })
