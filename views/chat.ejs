@@ -15,20 +15,12 @@
             </form>
         </div>
         <div id="scroll">
-
-            <div id="usuarios">usuarioaa</div>
-            <div id="usuarios">usuarioaa</div>
-            <div id="usuarios">usuarioaa</div>
-            <div id="usuarios">usuarioaa</div>
-            <div id="usuarios">usuarioaa</div>
-            <div id="usuarios">usuarioaa</div>
-            <div id="usuarios">usuarioaa</div>
-            <div id="usuarios">usuarioaa</div>
-            <div id="usuarios">usuarioaa</div>
-            <div id="usuarios">usuarioaa</div>
-            <div id="usuarios">usuarioaa</div>
-            <div id="usuarios">usuarioaa</div>
-
+            <% for( user of users) { %>
+                <div id="usuarios">
+                    Nombre: <%= user.name %> <br>
+                    Email: <%= user.email %>
+                </div>
+            <% }; %>
         </div>
 
     </div>
@@ -47,7 +39,7 @@
     }
 
     #conversacion {
-        background-color:white;
+        background-color: white;
         width: 69%;
         height: 100%;
         text-align: center;

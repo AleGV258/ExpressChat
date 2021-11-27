@@ -23,7 +23,65 @@ app.post('/ExpressChat', (req, res) => {
       //   pagina += '</body></html>';
       //res.send(pagina);	
 
-  res.render('chat.ejs')    //se pueden agregar parametros res.render('chat.ejs',{algo: algo});
+    var users = [  //algo asi es lo que se obtiene de la bd, ya que obtenemos un json
+      {
+        'name': 'Edinson', 
+        'email': 'edinsoncode@example.com',
+        'job': 'developer',
+        'age': 24 
+      },
+      {
+        'name': 'Richard', 
+        'email': 'richard@example.com',
+        'job': 'developer',
+        'age': 24 
+      },
+      {
+        'name': 'Luis', 
+        'email': 'luis@example.com',
+        'job': 'developer',
+        'age': 24 
+      },    
+      {
+        'name': 'Edinson', 
+        'email': 'edinsoncode@example.com',
+        'job': 'developer',
+        'age': 24 
+      },
+      {
+        'name': 'Richard', 
+        'email': 'richard@example.com',
+        'job': 'developer',
+        'age': 24 
+      },
+      {
+        'name': 'Luis', 
+        'email': 'luis@example.com',
+        'job': 'developer',
+        'age': 24 
+      },   
+      {
+        'name': 'Edinson', 
+        'email': 'edinsoncode@example.com',
+        'job': 'developer',
+        'age': 24 
+      },
+      {
+        'name': 'Richard', 
+        'email': 'richard@example.com',
+        'job': 'developer',
+        'age': 24 
+      },
+      {
+        'name': 'Luis', 
+        'email': 'luis@example.com',
+        'job': 'developer',
+        'age': 24 
+      },   
+  ]
+  res.render('chat.ejs',{users: users})    
+  
+  //se pueden agregar parametros res.render('chat.ejs',{algo: algo});
         //http://expressjs.com/en/api.html#res.render
 })
 
