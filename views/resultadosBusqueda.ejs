@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Formulario</title>
+</head>
+
+<body>
+    <div id="chats">
+        <div id="buscador">
+            <form action="resultadosBusqueda" method="">
+                <input type="text" name="usuario" size="10" id="barraBuscar"><br>
+                <button type="submit" value="buscar" id="botonBuscar"><img
+                        src="https://image.flaticon.com/icons/png/512/102/102281.png" alt="" width="25"></button>
+            </form>
+        </div>
+        <div id="result">Resultados de búsqueda:<%= usuario %></div>
+        <div id="scroll">
+            
+            <% for( user of users) { %>
+                <div id="usuarios">
+                    Nombre: <%= user.name %> <br>
+                        Email: <%= user.email %>
+                </div>
+                <% }; %>
+        </div>
+
+    </div>
+    <div id="conversacion">
+
+    </div>
+</body>
+<style>
+    #chats {
+        background-color: #0EF4EF;
+        width: 30%;
+        text-align: center;
+        border: 3px solid black;
+        height: 100%;
+        float: left;
+
+    }
+
+    #result {
+        text-align: center;
+        font-size: 30px;
+        color: black;
+        margin-top: 20px;
+    }
+
+    #conversacion {
+        background-color: white;
+        width: 69%;
+        height: 100%;
+        text-align: center;
+        border: 3px solid black;
+        height: 100%;
+        float: left;
+    }
+
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        background-color: #91D9F5;
+    }
+
+    ::-webkit-scrollbar {
+        display: none;
+    }
+
+    * {
+        margin: 0px;
+        font-family: sans-serif;
+    }
+
+    #buscador {
+        background-color: blue;
+        width: 90%;
+        height: 100px;
+        margin-left: 5%;
+        margin-top: 5%;
+        border-radius: 10px;
+    }
+
+    #barraBuscar {
+        width: 60%;
+        height: 50px;
+        margin-top: 25px;
+        margin-left: 50px;
+        box-sizing: border-box;
+        border-radius: 10px;
+        border: 3px solid black;
+        font-size: 20px;
+        text-align: center;
+        float: left;
+    }
+
+    #botonBuscar {
+        float: left;
+        border: 3px solid black;
+        border-radius: 50%;
+        width: 55px;
+        height: 55px;
+        margin-left: 25px;
+    }
+
+    #usuarios {
+        background-color: #99EFED;
+        width: 80%;
+        height: 80px;
+        margin-left: 10%;
+        margin-top: 5%;
+        border-radius: 10px;
+    }
+
+    #scroll {
+        width: 100%;
+        height: 75%;
+        position: static;
+        top: 10%;
+        overflow: scroll;
+    }
+</style>
+
+</html>

@@ -86,20 +86,77 @@ app.post('/ExpressChat', (req, res) => {
 })
 
 app.get('/resultadosBusqueda', (req, res) => {
+  // let usuario = req.query.usuario;                //code servible para otras cosas
+  // let pagina = '<!doctype html><html><head></head><body>';
+  //         // let num = req.query.valor;
+  //         // num = parseInt(num);
+  //         // let pagina = '<!doctype html><html><head></head><body>';
+  //         // for (let x = 1; x <= 10; x++) {
+  //         //   let tabla = num * x;
+  //         //   pagina += `${num} * ${x} = ${tabla} <br>`;
+  //         // }
+  //         // pagina += '<a href="index.html">Retornar</a>';
+  //         // pagina += '</body></html>';
+  // pagina += `El usuario es ${usuario}`;
+  // pagina += '</body></html>';
+  // res.send(pagina);
   let usuario = req.query.usuario;
-  let pagina = '<!doctype html><html><head></head><body>';
-          // let num = req.query.valor;
-          // num = parseInt(num);
-          // let pagina = '<!doctype html><html><head></head><body>';
-          // for (let x = 1; x <= 10; x++) {
-          //   let tabla = num * x;
-          //   pagina += `${num} * ${x} = ${tabla} <br>`;
-          // }
-          // pagina += '<a href="index.html">Retornar</a>';
-          // pagina += '</body></html>';
-  pagina += `El usuario es ${usuario}`;
-  pagina += '</body></html>';
-  res.send(pagina);
+  var users = [  //algo asi es lo que se obtiene de la bd, ya que obtenemos un json
+    {
+      'name': 'Edinson', 
+      'email': 'edinsoncode@example.com',
+      'job': 'developer',
+      'age': 24 
+    },
+    {
+      'name': 'Richard', 
+      'email': 'richard@example.com',
+      'job': 'developer',
+      'age': 24 
+    },
+    {
+      'name': 'Luis', 
+      'email': 'luis@example.com',
+      'job': 'developer',
+      'age': 24 
+    },    
+    {
+      'name': 'Edinson', 
+      'email': 'edinsoncode@example.com',
+      'job': 'developer',
+      'age': 24 
+    } ,{
+      'name': 'Richard', 
+      'email': 'richard@example.com',
+      'job': 'developer',
+      'age': 24 
+    },
+    {
+      'name': 'Luis', 
+      'email': 'luis@example.com',
+      'job': 'developer',
+      'age': 24 
+    },   
+    {
+      'name': 'Edinson', 
+      'email': 'edinsoncode@example.com',
+      'job': 'developer',
+      'age': 24 
+    },
+    {
+      'name': 'Richard', 
+      'email': 'richard@example.com',
+      'job': 'developer',
+      'age': 24 
+    },
+    {
+      'name': 'Luis', 
+      'email': 'luis@example.com',
+      'job': 'developer',
+      'age': 24 
+    }, 
+]
+  res.render('resultadosBusqueda.ejs',{users: users,usuario: usuario}) 
 })
 
 var server = app.listen(5000, () => {
