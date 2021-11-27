@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const path = require('path')
+const path = require('path');
 const bodyParser = require('body-parser');
 
 //especificamos el subdirectorio donde se encuentran las páginas estáticas
@@ -102,9 +102,8 @@ app.get('/resultadosBusqueda', (req, res) => {
   res.send(pagina);
 })
 
-
 var server = app.listen(5000, () => {
-  console.log('Servidor web iniciado');
+  console.log('Servidor Web Iniciado');
 });
 
 
