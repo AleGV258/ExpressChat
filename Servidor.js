@@ -1,91 +1,199 @@
 const express = require('express');
 const app = express();
-const path = require('path');
+//const path = require('path');
 const bodyParser = require('body-parser');
+const sqlite3 = require('sqlite3');
+const url = require('url');
+
+
+const db = new sqlite3.Database("./database/expressDB.db", (err) => {
+  if (err) {
+    console.log('No se puede conectar a la base de datos');
+  } else {
+    console.log('Conectado a la base de datos');
+  }
+});
+
+
 
 //especificamos el subdirectorio donde se encuentran las páginas estáticas
 app.use(express.static(__dirname + '/public'));
+
 app.set('view engine', 'ejs'); //renderizar paginas con parametros
 //extended: false significa que parsea solo string (no archivos de imagenes por ejemplo)
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post('/ExpressChat', (req, res) => {
-  //autentificacion
 
+  let correo = req.body.correo;
+  let contrasena = req.body.contrasena;
+  console.log(req.body)
+
+  console.log(correo + " y " + contrasena);
+
+  //autentificacion
+  sql = 'SELECT * FROM usuarios WHERE correo = ?'
+  db.get(sql, [correo], (err, row) => {
+    if (err) {
+      //res.status(400).json({ "error": err.message });
+      console.log('error ' + err)
+      return;
+    } else {
+      console.log(row)
+      if (correo == row.Correo && contrasena == row.Contrasena) {
+                    //hacer que esta consulta obtenga todos los chats donde participa el usuario con este correo y contrasena
+        // db.all("select * from albums", [], (err, rows) => {
+        //   if (err) {
+        //     res.status(400).json({ "error": err.message });
+        //     return;
+        //   }
+        //   res.render('chat.ejs', { users: rows })
+        // })
+        var users = [  //algo asi es lo que se obtiene de la bd, ya que obtenemos un json
+            {
+              'name': 'Edinson',
+              'email': 'edinsoncode@example.com',
+              'job': 'developer',
+              'age': 24
+            },
+            {
+              'name': 'Richard',
+              'email': 'richard@example.com',
+              'job': 'developer',
+              'age': 24
+            },
+        ]
+        res.render('chat.ejs', { users: users })
+      } else {
+        res.status(400).json({ "error": 'Correo o contraseña incorrecto' });
+      }
+    }
+  })
+ 
   //tokens para identificar usuario en toda la API
 
-      //code servible para otras cosas
-      // let correo =req.body.correo;
-      // let contrasena = req.body.contrasena;
-      // let pagina='<!doctype html><html><head></head><body>';
-      //   pagina += `<a href="/mostrartabla?valor=${5}">El correo es ${correo} y la contraseña es ${contrasena}</a> - `;
-      //   pagina += '</body></html>';
-      //res.send(pagina);	
+})
 
-    var users = [  //algo asi es lo que se obtiene de la bd, ya que obtenemos un json
-      {
-        'name': 'Edinson', 
-        'email': 'edinsoncode@example.com',
-        'job': 'developer',
-        'age': 24 
-      },
-      {
-        'name': 'Richard', 
-        'email': 'richard@example.com',
-        'job': 'developer',
-        'age': 24 
-      },
-      {
-        'name': 'Luis', 
-        'email': 'luis@example.com',
-        'job': 'developer',
-        'age': 24 
-      },    
-      {
-        'name': 'Edinson', 
-        'email': 'edinsoncode@example.com',
-        'job': 'developer',
-        'age': 24 
-      },
-      {
-        'name': 'Richard', 
-        'email': 'richard@example.com',
-        'job': 'developer',
-        'age': 24 
-      },
-      {
-        'name': 'Luis', 
-        'email': 'luis@example.com',
-        'job': 'developer',
-        'age': 24 
-      },   
-      {
-        'name': 'Edinson', 
-        'email': 'edinsoncode@example.com',
-        'job': 'developer',
-        'age': 24 
-      },
-      {
-        'name': 'Richard', 
-        'email': 'richard@example.com',
-        'job': 'developer',
-        'age': 24 
-      },
-      {
-        'name': 'Luis', 
-        'email': 'luis@example.com',
-        'job': 'developer',
-        'age': 24 
-      },   
-  ]
-  res.render('chat.ejs',{users: users})    
-  
-  //se pueden agregar parametros res.render('chat.ejs',{algo: algo});
-        //http://expressjs.com/en/api.html#res.render
+app.post('/registro', (req, res) => {
+  var nombre = req.body.nombre;
+  var correo = req.body.correo;
+  var contrasena = req.body.contrasena;
+  console.log(req.body)
+
+  db.run('INSERT INTO Usuarios (IdUsuario, Nombre, Correo, Contrasena, FechaIngreso, Administrador, Activo) values (?,?,?,?,?,?,?)', [, nombre, correo, contrasena, 'now', 'n', 'n'], (err, result) => {
+    if (err) {
+      res.status(400).json({ "error": err.message });
+      console.log(err)
+      return;
+    }
+    // res.status(200).json({ result });
+
+    // res.redirect(url.format({
+    //   pathname:"/ExpressChat",
+    //   query: {
+    //      "correo": correo,
+    //      "contrasena": contrasena
+    //    }
+    // }))
+    res.redirect('/');
+  });
 })
 
 app.get('/resultadosBusqueda', (req, res) => {
+
+  let usuario = req.query.usuario;
+  var users = [  //algo asi es lo que se obtiene de la bd, ya que obtenemos un json
+    {
+      'name': 'Edinson',
+      'email': 'edinsoncode@example.com',
+      'job': 'developer',
+      'age': 24
+    },
+    {
+      'name': 'Richard',
+      'email': 'richard@example.com',
+      'job': 'developer',
+      'age': 24
+    },
+    {
+      'name': 'Luis',
+      'email': 'luis@example.com',
+      'job': 'developer',
+      'age': 24
+    },
+    {
+      'name': 'Edinson',
+      'email': 'edinsoncode@example.com',
+      'job': 'developer',
+      'age': 24
+    }, {
+      'name': 'Richard',
+      'email': 'richard@example.com',
+      'job': 'developer',
+      'age': 24
+    },
+    {
+      'name': 'Luis',
+      'email': 'luis@example.com',
+      'job': 'developer',
+      'age': 24
+    },
+    {
+      'name': 'Edinson',
+      'email': 'edinsoncode@example.com',
+      'job': 'developer',
+      'age': 24
+    },
+    {
+      'name': 'Richard',
+      'email': 'richard@example.com',
+      'job': 'developer',
+      'age': 24
+    },
+    {
+      'name': 'Luis',
+      'email': 'luis@example.com',
+      'job': 'developer',
+      'age': 24
+    },
+  ]
+  res.render('resultadosBusqueda.ejs', { users: users, usuario: usuario })
+})
+
+var server = app.listen(5000, () => {
+  console.log('Servidor Web Iniciado');
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //code servible para otras cosas
+  // let correo =req.body.correo;
+  // let contrasena = req.body.contrasena;
+  // let pagina='<!doctype html><html><head></head><body>';
+  //   pagina += `<a href="/mostrartabla?valor=${5}">El correo es ${correo} y la contraseña es ${contrasena}</a> - `;
+  //   pagina += '</body></html>';
+  //res.send(pagina);	
+
+
+
+
   // let usuario = req.query.usuario;                //code servible para otras cosas
   // let pagina = '<!doctype html><html><head></head><body>';
   //         // let num = req.query.valor;
@@ -100,71 +208,6 @@ app.get('/resultadosBusqueda', (req, res) => {
   // pagina += `El usuario es ${usuario}`;
   // pagina += '</body></html>';
   // res.send(pagina);
-  let usuario = req.query.usuario;
-  var users = [  //algo asi es lo que se obtiene de la bd, ya que obtenemos un json
-    {
-      'name': 'Edinson', 
-      'email': 'edinsoncode@example.com',
-      'job': 'developer',
-      'age': 24 
-    },
-    {
-      'name': 'Richard', 
-      'email': 'richard@example.com',
-      'job': 'developer',
-      'age': 24 
-    },
-    {
-      'name': 'Luis', 
-      'email': 'luis@example.com',
-      'job': 'developer',
-      'age': 24 
-    },    
-    {
-      'name': 'Edinson', 
-      'email': 'edinsoncode@example.com',
-      'job': 'developer',
-      'age': 24 
-    } ,{
-      'name': 'Richard', 
-      'email': 'richard@example.com',
-      'job': 'developer',
-      'age': 24 
-    },
-    {
-      'name': 'Luis', 
-      'email': 'luis@example.com',
-      'job': 'developer',
-      'age': 24 
-    },   
-    {
-      'name': 'Edinson', 
-      'email': 'edinsoncode@example.com',
-      'job': 'developer',
-      'age': 24 
-    },
-    {
-      'name': 'Richard', 
-      'email': 'richard@example.com',
-      'job': 'developer',
-      'age': 24 
-    },
-    {
-      'name': 'Luis', 
-      'email': 'luis@example.com',
-      'job': 'developer',
-      'age': 24 
-    }, 
-]
-  res.render('resultadosBusqueda.ejs',{users: users,usuario: usuario}) 
-})
-
-var server = app.listen(5000, () => {
-  console.log('Servidor Web Iniciado');
-});
-
-
-
 
 
 
