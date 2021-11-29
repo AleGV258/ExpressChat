@@ -9,6 +9,7 @@ const url = require('url');
 const db = new sqlite3.Database("./database/expressDB.db", (err) => {
   if (err) {
     console.log('No se puede conectar a la base de datos');
+    console.log(err)
   } else {
     console.log('Conectado a la base de datos');
   }
