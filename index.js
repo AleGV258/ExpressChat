@@ -129,7 +129,7 @@ app.delete('/Mensajes/:id', function(req, res){
 //Funciones para insertar datos en las tablas
 app.post('/Chats/',  function(req,res) {
     var reqBody = req.body;
-    db.run('INSERT INTO Chats (IdChat, NombreChat) VALUES(?, ?);', [reqBody.IdChat, reqBody.NombreChat], (err, result)=>{
+    db.run('INSERT INTO Chats (NombreChat) VALUES(?);', [reqBody.NombreChat], (err, result)=>{
         if (err){
             res.status(400).json({"error":err.message});
             return;
@@ -139,7 +139,7 @@ app.post('/Chats/',  function(req,res) {
 });
 app.post('/Usuarios/',  function(req,res) {
     var reqBody = req.body;
-    db.run('INSERT INTO Usuarios (IdUsuario, Nombre, Correo, Contrasena, Administrador, Activo) VALUES(?, ?, ?, ?, ?, ?);', [reqBody.IdUsuario, reqBody.Nombre, reqBody.Correo, reqBody.Contrasena, reqBody.Administrador, reqBody.Activo], (err, result)=>{
+    db.run('INSERT INTO Usuarios (Nombre, Correo, Contrasena, Administrador, Activo) VALUES(?, ?, ?, ?, ?);', [reqBody.Nombre, reqBody.Correo, reqBody.Contrasena, reqBody.Administrador, reqBody.Activo], (err, result)=>{
         if (err){
             res.status(400).json({"error":err.message});
             return;
@@ -149,7 +149,7 @@ app.post('/Usuarios/',  function(req,res) {
 });
 app.post('/Participantes/',  function(req,res) {
     var reqBody = req.body;
-    db.run('INSERT INTO Participantes (IdParticipante, IdChat, IdUsuario) VALUES(?, ?, ?);', [reqBody.IdParticipante, reqBody.IdChat, reqBody.IdUsuario], (err, result)=>{
+    db.run('INSERT INTO Participantes (IdChat, IdUsuario) VALUES(?, ?);', [reqBody.IdChat, reqBody.IdUsuario], (err, result)=>{
         if (err){
             res.status(400).json({"error":err.message});
             return;
@@ -159,7 +159,7 @@ app.post('/Participantes/',  function(req,res) {
 });
 app.post('/Mensajes/',  function(req,res) {
     var reqBody = req.body;
-    db.run('INSERT INTO Mensajes (IdMensaje, Texto, IdChat, IdUsuario) VALUES(?, ?, ?, ?);', [reqBody.IdMensaje, reqBody.Texto, reqBody.IdChat, reqBody.IdUsuario], (err, result)=>{
+    db.run('INSERT INTO Mensajes (Texto, IdChat, IdUsuario) VALUES(?, ?, ?);', [reqBody.Texto, reqBody.IdChat, reqBody.IdUsuario], (err, result)=>{
         if (err){
             res.status(400).json({"error":err.message});
             return;
