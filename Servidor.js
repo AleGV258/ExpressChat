@@ -41,30 +41,32 @@ app.post('/ExpressChat', (req, res) => {
       return;
     } else {
       console.log(row)
+      var idusuario = row.idusuario;
       if (correo == row.Correo && contrasena == row.Contrasena) {
-                    //hacer que esta consulta obtenga todos los chats donde participa el usuario con este correo y contrasena
-        // db.all("select * from albums", [], (err, rows) => {
-        //   if (err) {
-        //     res.status(400).json({ "error": err.message });
-        //     return;
-        //   }
-        //   res.render('chat.ejs', { users: rows })
-        // })
-        var users = [  //algo asi es lo que se obtiene de la bd, ya que obtenemos un json
-            {
-              'name': 'Edinson',
-              'email': 'edinsoncode@example.com',
-              'job': 'developer',
-              'age': 24
-            },
-            {
-              'name': 'Richard',
-              'email': 'richard@example.com',
-              'job': 'developer',
-              'age': 24
-            },
-        ]
-        res.render('chat.ejs', { users: users })
+        console.log('Entro')
+        sql = 'select * from Chats where idchat IN (SELECT idchat FROM Participantes where idusuario = ?)'
+        db.all(sql, [idusuario], (err, rows) => {
+          if (err) {
+            res.status(400).json({ "error": err.message });
+            return;
+          }
+          res.render('chat.ejs', { users: rows })
+        })
+        // var users = [  //algo asi es lo que se obtiene de la bd, ya que obtenemos un json
+        //     {
+        //       'name': 'Edinson',
+        //       'email': 'edinsoncode@example.com',
+        //       'job': 'developer',
+        //       'age': 24
+        //     },
+        //     {
+        //       'name': 'Richard',
+        //       'email': 'richard@example.com',
+        //       'job': 'developer',
+        //       'age': 24
+        //     },
+        // ]
+        // res.render('chat.ejs', { users: users })
       } else {
         res.status(400).json({ "error": 'Correo o contraseña incorrecto' });
       }
