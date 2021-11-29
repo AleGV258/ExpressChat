@@ -16,8 +16,8 @@
         </div>
         <div id="scroll">
             <% for( chat of chats) { %>
-                <div id="usuarios">
-                    Nombre: <%= chat.NombreChat %> <br>
+                <div id="usuarios" name="<%= chat.NombreChat %>">
+                    <%= chat.NombreChat %>
                     <!-- Email: <%= chat.Correo %> -->
                 </div>
             <% }; %>
