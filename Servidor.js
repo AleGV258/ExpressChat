@@ -60,7 +60,6 @@ app.post('/ExpressChat', (req, res) => {
               console.log(rows)
               res.render('chat.ejs', { chats: rows })
             }
-
           })
         } else {
           res.status(400).json({ "error": 'Correo o contraseña incorrecto' });
@@ -94,62 +93,18 @@ app.post('/registro', (req, res) => {
 app.get('/resultadosBusqueda', (req, res) => {
 
   let usuario = req.query.usuario;
-  var users = [  //algo asi es lo que se obtiene de la bd, ya que obtenemos un json
-    {
-      'name': 'Edinson',
-      'email': 'edinsoncode@example.com',
-      'job': 'developer',
-      'age': 24
-    },
-    {
-      'name': 'Richard',
-      'email': 'richard@example.com',
-      'job': 'developer',
-      'age': 24
-    },
-    {
-      'name': 'Luis',
-      'email': 'luis@example.com',
-      'job': 'developer',
-      'age': 24
-    },
-    {
-      'name': 'Edinson',
-      'email': 'edinsoncode@example.com',
-      'job': 'developer',
-      'age': 24
-    }, {
-      'name': 'Richard',
-      'email': 'richard@example.com',
-      'job': 'developer',
-      'age': 24
-    },
-    {
-      'name': 'Luis',
-      'email': 'luis@example.com',
-      'job': 'developer',
-      'age': 24
-    },
-    {
-      'name': 'Edinson',
-      'email': 'edinsoncode@example.com',
-      'job': 'developer',
-      'age': 24
-    },
-    {
-      'name': 'Richard',
-      'email': 'richard@example.com',
-      'job': 'developer',
-      'age': 24
-    },
-    {
-      'name': 'Luis',
-      'email': 'luis@example.com',
-      'job': 'developer',
-      'age': 24
-    },
-  ]
-  res.render('resultadosBusqueda.ejs', { users: users, usuario: usuario })
+  sql = 'select * from Usuarios where Nombre LIKE (?)'
+  
+  db.all(sql, ['%'+usuario+'%'], (err, rows) => {
+    console.log('Entro al db');
+    if (err) {
+      res.status(400).json({ "error": err.message });
+      return;
+    } else {
+      console.log(rows)
+      res.render('resultadosBusqueda.ejs', { users: rows, usuario: usuario })
+    }
+  })
 })
 
 var server = app.listen(5000, () => {
