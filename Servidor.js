@@ -84,7 +84,8 @@ app.post('/registro', (req, res) => {
   var fecha = Date(Date.now());
   fecha = fecha.toString();
   console.log(fecha);
-  db.run('INSERT INTO Usuarios (IdUsuario, Nombre, Correo, Contrasena, FechaIngreso, Administrador, Activo) values (?,?,?,?,?,?,?)', [, nombre, correo, contrasena, fecha, 'n', 'n'], (err, result) => {
+  
+  db.run('INSERT INTO Usuarios (IdUsuario, Nombre, Correo, Contrasena, FechaIngreso, Administrador, Activo) values (?,?,?,?,?,?,?)', [, nombre, correo, contrasena, , 'n', 'n'], (err, result) => {
     if (err) {
       res.status(400).json({ "error": err.message });
       console.log(err)
