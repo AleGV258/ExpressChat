@@ -16,7 +16,7 @@
         </div>
         <div id="scroll">
             <% for( chat of chats) { %>
-                <div id="usuarios" name="<%= chat.NombreChat %>">
+                <div id="usuarios" name="<%= chat.NombreChat %>" onclick="window.location.href = 'registro' ">
                     <%= chat.NombreChat %>
                     <!-- Email: <%= chat.Correo %> -->
                 </div>

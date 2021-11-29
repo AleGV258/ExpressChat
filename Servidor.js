@@ -35,7 +35,7 @@ app.post('/ExpressChat', (req, res) => {
   var entro = new Boolean(false);
   var idusuario;
 
-  //autentificacion
+  //autentificacion                                 falta hacer sessiones
   sql = 'SELECT * FROM usuarios WHERE correo = ?'
   db.get(sql, [correo], (err, row) => {
     if (err) {
@@ -44,46 +44,31 @@ app.post('/ExpressChat', (req, res) => {
       return;
     } else {
       console.log(row)
-      if (correo == row.Correo && contrasena == row.Contrasena) {
-        console.log('Entro')
-        idusuario = row.IdUsuario;
-        sql = 'select * from Chats where idchat IN (SELECT idchat FROM Participantes where idusuario = ?)'
-        db.all(sql, [idusuario], (err, rows) => {
-          console.log('Entro al 2 db');
-          if (err) {
-            res.status(400).json({ "error": err.message });
-            return;
-          } else {
-            console.log(rows)
-            res.render('chat.ejs', { chats: rows })
-          }
-
-        })
-      } else {
+      if (typeof row === 'undefined') {
         res.status(400).json({ "error": 'Correo o contraseña incorrecto' });
+      } else {
+        if (correo == row.Correo && contrasena == row.Contrasena) {
+          console.log('Entro')
+          idusuario = row.IdUsuario;
+          sql = 'select * from Chats where idchat IN (SELECT idchat FROM Participantes where idusuario = ?)'
+          db.all(sql, [idusuario], (err, rows) => {
+            console.log('Entro al 2 db');
+            if (err) {
+              res.status(400).json({ "error": err.message });
+              return;
+            } else {
+              console.log(rows)
+              res.render('chat.ejs', { chats: rows })
+            }
+
+          })
+        } else {
+          res.status(400).json({ "error": 'Correo o contraseña incorrecto' });
+        }
       }
 
     }
   })
-
-  // if (entro == true) {
-  //   console.log('Entro al segundo');
-  //   sql = 'select * from Chats where idchat IN (SELECT idchat FROM Participantes where idusuario = ?)'
-  //   db.all(sql, [idusuario], (err, rows) => {
-  //     if (err) {
-  //       res.status(400).json({ "error": err.message });
-  //       return;
-  //     } else {
-  //       console.log(rows)
-  //       res.render('chat.ejs', { users: rows })
-  //     }
-
-  //   })
-  // }
-
-
-  //tokens para identificar usuario en toda la API
-
 })
 
 app.post('/registro', (req, res) => {
