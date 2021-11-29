@@ -6,7 +6,7 @@ const sqlite3 = require('sqlite3');
 const url = require('url');
 
 
-const db = new sqlite3.Database("./database/expressDB.db", (err) => {
+const db = new sqlite3.Database("./public/database/expressDB.db", (err) => {
   if (err) {
     console.log('No se puede conectar a la base de datos');
     console.log(err)
@@ -44,11 +44,21 @@ app.post('/ExpressChat', (req, res) => {
       return;
     } else {
       console.log(row)
-
       if (correo == row.Correo && contrasena == row.Contrasena) {
         console.log('Entro')
-        entro = true;
-        idusuario = row.idusuario;
+        idusuario = row.IdUsuario;
+        sql = 'select * from Chats where idchat IN (SELECT idchat FROM Participantes where idusuario = ?)'
+        db.all(sql, [idusuario], (err, rows) => {
+          console.log('Entro al 2 db');
+          if (err) {
+            res.status(400).json({ "error": err.message });
+            return;
+          } else {
+            console.log(rows)
+            res.render('chat.ejs', { chats: rows })
+          }
+
+        })
       } else {
         res.status(400).json({ "error": 'Correo o contraseña incorrecto' });
       }
@@ -56,31 +66,20 @@ app.post('/ExpressChat', (req, res) => {
     }
   })
 
-  if (entro == true) {
-    sql = 'select * from Chats where idchat IN (SELECT idchat FROM Participantes where idusuario = ?)'
-    db.all(sql, [idusuario], (err, rows) => {
-      if (err) {
-        res.status(400).json({ "error": err.message });
-        return;
-      }
-      res.render('chat.ejs', { users: rows })
-    })
-    // var users = [  //algo asi es lo que se obtiene de la bd, ya que obtenemos un json
-    //     {
-    //       'name': 'Edinson',
-    //       'email': 'edinsoncode@example.com',
-    //       'job': 'developer',
-    //       'age': 24
-    //     },
-    //     {
-    //       'name': 'Richard',
-    //       'email': 'richard@example.com',
-    //       'job': 'developer',
-    //       'age': 24
-    //     },
-    // ]
-    // res.render('chat.ejs', { users: users })
-  }
+  // if (entro == true) {
+  //   console.log('Entro al segundo');
+  //   sql = 'select * from Chats where idchat IN (SELECT idchat FROM Participantes where idusuario = ?)'
+  //   db.all(sql, [idusuario], (err, rows) => {
+  //     if (err) {
+  //       res.status(400).json({ "error": err.message });
+  //       return;
+  //     } else {
+  //       console.log(rows)
+  //       res.render('chat.ejs', { users: rows })
+  //     }
+
+  //   })
+  // }
 
 
   //tokens para identificar usuario en toda la API
@@ -103,15 +102,6 @@ app.post('/registro', (req, res) => {
       console.log(err)
       return;
     }
-    // res.status(200).json({ result });
-
-    // res.redirect(url.format({
-    //   pathname:"/ExpressChat",
-    //   query: {
-    //      "correo": correo,
-    //      "contrasena": contrasena
-    //    }
-    // }))
     res.redirect('/');
   });
 })
@@ -190,7 +180,21 @@ var server = app.listen(5000, () => {
 
 
 
-
+// var users = [  //algo asi es lo que se obtiene de la bd, ya que obtenemos un json
+    //     {
+    //       'name': 'Edinson',
+    //       'email': 'edinsoncode@example.com',
+    //       'job': 'developer',
+    //       'age': 24
+    //     },
+    //     {
+    //       'name': 'Richard',
+    //       'email': 'richard@example.com',
+    //       'job': 'developer',
+    //       'age': 24
+    //     },
+    // ]
+    // res.render('chat.ejs', { users: users })
 
 
 
