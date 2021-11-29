@@ -31,6 +31,8 @@ app.post('/ExpressChat', (req, res) => {
   console.log(req.body)
 
   console.log(correo + " y " + contrasena);
+  var entro = new Boolean(false);
+  var idusuario;
 
   //autentificacion
   sql = 'SELECT * FROM usuarios WHERE correo = ?'
@@ -41,38 +43,45 @@ app.post('/ExpressChat', (req, res) => {
       return;
     } else {
       console.log(row)
-      var idusuario = row.idusuario;
+
       if (correo == row.Correo && contrasena == row.Contrasena) {
         console.log('Entro')
-        sql = 'select * from Chats where idchat IN (SELECT idchat FROM Participantes where idusuario = ?)'
-        db.all(sql, [idusuario], (err, rows) => {
-          if (err) {
-            res.status(400).json({ "error": err.message });
-            return;
-          }
-          res.render('chat.ejs', { users: rows })
-        })
-        // var users = [  //algo asi es lo que se obtiene de la bd, ya que obtenemos un json
-        //     {
-        //       'name': 'Edinson',
-        //       'email': 'edinsoncode@example.com',
-        //       'job': 'developer',
-        //       'age': 24
-        //     },
-        //     {
-        //       'name': 'Richard',
-        //       'email': 'richard@example.com',
-        //       'job': 'developer',
-        //       'age': 24
-        //     },
-        // ]
-        // res.render('chat.ejs', { users: users })
+        entro = true;
+        idusuario = row.idusuario;
       } else {
         res.status(400).json({ "error": 'Correo o contraseña incorrecto' });
       }
+
     }
   })
- 
+
+  if (entro == true) {
+    sql = 'select * from Chats where idchat IN (SELECT idchat FROM Participantes where idusuario = ?)'
+    db.all(sql, [idusuario], (err, rows) => {
+      if (err) {
+        res.status(400).json({ "error": err.message });
+        return;
+      }
+      res.render('chat.ejs', { users: rows })
+    })
+    // var users = [  //algo asi es lo que se obtiene de la bd, ya que obtenemos un json
+    //     {
+    //       'name': 'Edinson',
+    //       'email': 'edinsoncode@example.com',
+    //       'job': 'developer',
+    //       'age': 24
+    //     },
+    //     {
+    //       'name': 'Richard',
+    //       'email': 'richard@example.com',
+    //       'job': 'developer',
+    //       'age': 24
+    //     },
+    // ]
+    // res.render('chat.ejs', { users: users })
+  }
+
+
   //tokens para identificar usuario en toda la API
 
 })
@@ -82,11 +91,11 @@ app.post('/registro', (req, res) => {
   var correo = req.body.correo;
   var contrasena = req.body.contrasena;
   console.log(req.body)
-  
+
   var fecha = Date(Date.now());
   fecha = fecha.toString();
   console.log(fecha);
-  
+
   db.run('INSERT INTO Usuarios (IdUsuario, Nombre, Correo, Contrasena, FechaIngreso, Administrador, Activo) values (?,?,?,?,?,?,?)', [, nombre, correo, contrasena, , 'n', 'n'], (err, result) => {
     if (err) {
       res.status(400).json({ "error": err.message });
