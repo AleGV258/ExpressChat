@@ -25,6 +25,8 @@ app.set('view engine', 'ejs'); //renderizar paginas con parametros
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
+//app.use(express.json());
+
 app.post('/ExpressChat', (req, res) => {
 
   let correo = req.body.correo;
@@ -94,8 +96,8 @@ app.get('/resultadosBusqueda', (req, res) => {
 
   let usuario = req.query.usuario;
   sql = 'select * from Usuarios where Nombre LIKE (?)'
-  
-  db.all(sql, ['%'+usuario+'%'], (err, rows) => {
+
+  db.all(sql, ['%' + usuario + '%'], (err, rows) => {
     console.log('Entro al db');
     if (err) {
       res.status(400).json({ "error": err.message });
@@ -106,6 +108,23 @@ app.get('/resultadosBusqueda', (req, res) => {
     }
   })
 })
+
+app.get('/Chat/:idChat', function (req, res) {
+  console.log(req.params.idChat);
+  var idChat = req.params.idChat;
+  sql = 'SELECT * FROM Mensajes WHERE idchat = ?';
+  db.all(sql, [idChat], (err, rows) => {
+    console.log('Entro al db');
+    if (err) {
+      res.status(400).json({ "error": err.message });
+      return;
+    } else {
+      console.log(rows)
+      //res.render('chat.ejs', { chats: rows })
+      res.status(200).json({rows});
+    }
+  })
+});
 
 var server = app.listen(5000, () => {
   console.log('Servidor Web Iniciado');
