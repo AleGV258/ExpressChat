@@ -15,17 +15,35 @@
             </form>
         </div>
         <div id="scroll">
-            <% for( chat of chats) { %>
-                <div id="usuarios" name="<%= chat.IdChat %>" onclick="window.location.href = 'chat/<%= chat.IdChat %>' ">
-                    <%= chat.NombreChat %>
-                    <!-- Email: <%= chat.Correo %> -->
-                </div>
+            <% if( typeof chats ==='undefined' ) { %>
+                <!-- <h1>Parece que no tienes ningun chat</h1> -->
+            <% }  else { %>                
+                <% for( chat of chats) { %>
+                    <div id="usuarios" name="<%= chat.IdChat %>"onclick="window.location.href = 'chat/<%= chat.IdChat %>' ">
+                        <%= chat.NombreChat %>
+                            <!-- Email: <%= chat.Correo %> -->
+                    </div>
+                <% }; %>
             <% }; %>
         </div>
 
     </div>
     <div id="conversacion">
-
+        <div id="scroll">
+            <% if( typeof mensajes ==='undefined' ) { %>
+                <!-- <h1>Parece que no tienes ningun mensaje</h1> -->
+            <% }  else { %>                
+                <% for( mensaje of mensajes) { %>
+                    <div id="usuarios" name="">
+                
+                        <%= mensaje.IdMensaje %> <br>
+                        <%= mensaje.Texto %> <br>
+                        <%= mensaje.Fecha %> <br>
+                            
+                    </div>
+                <% }; %>
+            <% }; %>
+        </div>
     </div>
 </body>
 <style>

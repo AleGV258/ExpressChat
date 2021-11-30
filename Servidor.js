@@ -120,8 +120,8 @@ app.get('/Chat/:idChat', function (req, res) {
       return;
     } else {
       console.log(rows)
-      //res.render('chat.ejs', { chats: rows })
-      res.status(200).json({rows});
+      res.render('chat.ejs', { mensajes: rows })
+      //res.status(200).json({rows});
     }
   })
 });
