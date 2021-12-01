@@ -26,10 +26,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.render('index.ejs', { validacion: 'N'});
+  res.render('index.ejs', { validacion: 'N' });
 })
 app.get('/Registro.ejs', (req, res) => {
-  res.render('Registro.ejs', { validacion: 'N'});
+  res.render('Registro.ejs', { validacion: 'N' });
 })
 
 app.post('/ExpressChat', (req, res) => {
@@ -72,7 +72,7 @@ app.post('/ExpressChat', (req, res) => {
           })
         } else {
           res.status(400);
-          res.render('index.ejs', { validacion: 'I'})
+          res.render('index.ejs', { validacion: 'I' })
         }
       }
 
@@ -137,7 +137,7 @@ app.get('/Chat/:idChat', function (req, res) {
               console.log(fila2);
               console.log(usuarioActual);
               res.status(200);
-              res.render('Chat.ejs', { mensajes: rows, usuarios: fila, usuarios2: fila2});
+              res.render('Chat.ejs', { mensajes: rows, usuarios: fila, usuarios2: fila2 });
             }
           })
         }
@@ -145,6 +145,25 @@ app.get('/Chat/:idChat', function (req, res) {
     }
   })
 });
+
+
+app.post('/chat/enviarMensaje', function (req, res) {
+  console.log(req.body.mensajeEscrito);
+  //obtener idchat
+  //obtener id usuario
+
+
+  // db.run('INSERT INTO Mensajes (Texto, IdChat, IdUsuario) VALUES(?, ?, ?);', [req.body.mensajeEscrito, IdChat, IdUsuario], (err, result)=>{
+  //     if (err){
+  //         res.status(400).json({"error":err.message});
+  //         return;
+  //     }else{
+
+  //     }
+  //     
+  // });
+});
+
 
 app.listen(5000, () => { console.log('Servidor Web Iniciado'); });
 

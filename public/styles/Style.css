@@ -301,3 +301,7 @@ body{
     font-size: larger;
     float: left;
 }
+.escribirMensaje{ 
+    width: 1000px;
+    height: 10px;
+}
