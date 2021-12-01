@@ -30,6 +30,7 @@
 }
 #is_registro{
     width: 40%;
+    z-index: 10;
     background-color: #0EF4EF;
     margin-left: 28%;
     margin-top: 3.8%;
@@ -68,7 +69,7 @@ input[type=submit]{
 }
 input[type=submit]:hover{
     color: black;
-    background-color: #f853c1;
+    background-color: #FF82A2;
 }
 input[type=submit]:active{
     color: black;
@@ -93,4 +94,210 @@ label{
 }
 body{
     background-color: #91D9F5;
+    height: 100%;
+}
+.valido{
+    background-color: #2ecc71;
+    width: 80%;
+    height: 5vh;
+    margin: 1% 10% -3% 10%;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    font-family: "Letra Recta";
+}
+.novalido{
+    background-color: #e74c3c;
+    width: 80%;
+    height: 5vh;
+    margin: 1% 10% -3% 10%;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    font-family: "Letra Recta";
+}
+
+/* Chats */
+::-webkit-scrollbar{
+    display: none;
+}
+#chats{
+    background-color: #0EF4EF;
+    width: 30%;
+    height: 100%;
+    text-align: center;
+    border: 2px solid black;
+    float: left;
+}
+#conversacion{
+    background-color: white;
+    width: 69%;
+    height: 120vh;
+    text-align: center;
+    border: 2px solid black;
+    height: 100%;
+    float: left;
+}
+#buscador{
+    background-color: blue;
+    width: 90%;
+    height: 100px;
+    margin-left: 5%;
+    margin-top: 5%;
+    border-radius: 10px;
+}
+#barraBuscar{
+    width: 60%;
+    height: 50px;
+    margin-top: 25px;
+    margin-left: 50px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    border: 2px solid black;
+    font-size: 20px;
+    text-align: center;
+    float: left;
+}
+#botonBuscar{
+    float: left;
+    border: 2px solid black;
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    margin: 1% 0 0 5%;
+    cursor: pointer;
+}
+#botonBuscar:hover{
+    background-color: #FF82A2;
+}
+#botonBuscar:active{
+    background-color: blue;
+}
+.image{
+    width: 50%;
+    height: 50%;
+}
+#usuarios{
+    background-color: white;
+    width: 80%;
+    height: 7vh;
+    margin: 5% 10% 0 10%;
+    border-radius: 10px;
+    font-size: x-large;
+    font-weight: 600;
+    font-family: "Letra Normal";
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+#usuarios:hover{
+    background-color: #FF82A2;
+}
+#usuarios:active{
+    background-color: blue;
+}
+#usuarios2{
+    background-color: #99EFED;
+    width: 80%;
+    height: 13vh;
+    margin: 5% 10% 0 10%;
+    border-radius: 10px;
+    font-size: x-large;
+    font-weight: 600;
+    font-family: "Letra Normal";
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+#usuarios2:hover{
+    background-color: #FF82A2;
+}
+#usuarios2:active{
+    background-color: whitesmoke;
+}
+#scroll{
+    width: 100%;
+    height: 99.4vh;
+    position: static;
+    top: 10%;
+    overflow: scroll;
+}
+#scroll2{
+    width: 100%;
+    height: 77.8vh;
+    position: static;
+    top: 10%;
+    overflow: scroll;
+}
+#result{
+    text-align: center;
+    font-size: medium;
+    font-family: "Letra Recta";
+    color: black;
+    margin-top: 5%;
+    letter-spacing: 1px;
+}
+#regresar{
+    background-color: blue;
+    font-family: "Letra Recta";
+    margin: -12.1% 10% 8% 10%;
+    width: 80%;
+    height: 6vh;
+    cursor: pointer;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+}
+#regresar:hover{
+    background-color: #FF82A2;
+}
+#regresar:active{
+    background: whitesmoke;
+}
+.regresar{
+    text-decoration: none;
+    color: whitesmoke;
+}
+.regresar:hover{
+    color: black;
+}
+.regresar:active{
+    color: black;
+}
+
+.mensajepropio{
+    width: 80%;
+    height: auto;
+    padding: 2% 4%;
+    margin: 2% 2% 0 0;
+    text-align: left;
+    border-radius: 10px;
+    justify-content: center;
+    background-color: #FF82A2;
+    font-family: "Letra Normal";
+    font-size: larger;
+    float: right;
+}
+.mensajeotro{
+    width: 80%;
+    height: auto;
+    padding: 2% 4%;
+    margin: 2% 0 0 2%;
+    border-radius: 10px;
+    text-align: left;
+    justify-content: center;
+    background-color: #00E4E7;
+    font-family: "Letra Normal";
+    font-size: larger;
+    float: left;
 }

@@ -1,134 +1,60 @@
 <!DOCTYPE html>
-<html>
-
-<head>
-    <title>Formulario</title>
-</head>
-
-<body>
-    <div id="chats">
-        <div id="buscador">
-            <form action="resultadosBusqueda" method="">
-                <input type="text" name="usuario" size="10" id="barraBuscar"><br>
-                <button type="submit" value="buscar" id="botonBuscar"><img
-                        src="https://image.flaticon.com/icons/png/512/102/102281.png" alt="" width="25"></button>
-            </form>
-        </div>
-        <div id="scroll">
-            <% if( typeof chats ==='undefined' ) { %>
-                <!-- <h1>Parece que no tienes ningun chat</h1> -->
-            <% }  else { %>                
-                <% for( chat of chats) { %>
-                    <div id="usuarios" name="<%= chat.IdChat %>"onclick="window.location.href = 'chat/<%= chat.IdChat %>' ">
-                        <%= chat.NombreChat %>
-                            <!-- Email: <%= chat.Correo %> -->
-                    </div>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/styles/Style.css">
+        <title>Chats</title>
+    </head>
+    <body>
+        <div id="chats">
+            <div id="buscador">
+                <form action="resultadosBusqueda" method="">
+                    <input type="text" name="usuario" size="10" id="barraBuscar"><br>
+                    <button type="submit" value="buscar" id="botonBuscar"><img src="/images/search.png" class="image"></button>
+                </form>
+            </div>
+            <div id="scroll2">
+                <% if( typeof chats ==='undefined' ) { %>
+                    <!-- <h1>Parece que no tienes ningun chat</h1> -->
+                <% }  else { %>                
+                    <% for( chat of chats) { %>
+                        <div id="usuarios" name="<%= chat.IdChat %>" onclick="window.location.href = 'Chat/<%= chat.IdChat %>'">
+                            <%= chat.NombreChat %>
+                                <!-- Email: <%= chat.Correo %> -->
+                        </div>
+                    <% }; %>
                 <% }; %>
-            <% }; %>
+            </div>
+            <div id="regresar">
+                <a href="./" class="regresar">Salir</a>
+            </div>
         </div>
-
-    </div>
-    <div id="conversacion">
-        <div id="scroll">
-            <% if( typeof mensajes ==='undefined' ) { %>
-                <!-- <h1>Parece que no tienes ningun mensaje</h1> -->
-            <% }  else { %>                
-                <% for( mensaje of mensajes) { %>
-                    <div id="usuarios" name="">
-                
-                        <%= mensaje.IdMensaje %> <br>
-                        <%= mensaje.Texto %> <br>
-                        <%= mensaje.Fecha %> <br>
-                            
-                    </div>
+        <div id="conversacion">
+            <div id="scroll">
+                <% if(typeof mensajes === 'undefined'){ %>
+                    <!-- <h1>Parece que no tienes ningun mensaje</h1> -->
+                <% }else{ %>                
+                    <% for(mensaje of mensajes){ %>
+                        <% for(usuario of usuarios){ %>
+                                <% if(usuario.IdUsuario === mensaje.IdUsuario){ %>
+                                    <div class="mensajepropio" name="">
+                                        <%= usuario.Nombre %> <br>
+                                        <%= mensaje.IdMensaje %> <br>
+                                        <%= mensaje.Texto %> <br>
+                                        <%= mensaje.Fecha %> <br>
+                                    </div>
+                                <% }else{ %>
+                                    <div class="mensajeotro" name="">
+                                        <%= usuarios2.Nombre %> <br>
+                                        <%= mensaje.IdMensaje %> <br>
+                                        <%= mensaje.Texto %> <br>
+                                        <%= mensaje.Fecha %> <br>
+                                    </div>
+                                <% }; %>   
+                        <% }; %>
+                    <% }; %>
                 <% }; %>
-            <% }; %>
+            </div>
         </div>
-    </div>
-</body>
-<style>
-    #chats {
-        background-color: #0EF4EF;
-        width: 30%;
-        text-align: center;
-        border: 3px solid black;
-        height: 100%;
-        float: left;
-    }
-
-    #conversacion {
-        background-color: white;
-        width: 69%;
-        height: 100%;
-        text-align: center;
-        border: 3px solid black;
-        height: 100%;
-        float: left;
-    }
-
-    html,
-    body {
-        width: 100%;
-        height: 100%;
-        background-color: #91D9F5;
-    }
-
-    ::-webkit-scrollbar {
-        display: none;
-    }
-
-    * {
-        margin: 0px;
-        font-family: sans-serif;
-    }
-
-    #buscador {
-        background-color: blue;
-        width: 90%;
-        height: 100px;
-        margin-left: 5%;
-        margin-top: 5%;
-        border-radius: 10px;
-    }
-
-    #barraBuscar {
-        width: 60%;
-        height: 50px;
-        margin-top: 25px;
-        margin-left: 50px;
-        box-sizing: border-box;
-        border-radius: 10px;
-        border: 3px solid black;
-        font-size: 20px;
-        text-align: center;
-        float: left;
-    }
-
-    #botonBuscar {
-        float: left;
-        border: 3px solid black;
-        border-radius: 50%;
-        width: 55px;
-        height: 55px;
-        margin-left: 25px;
-    }
-
-    #usuarios {
-        background-color: white;
-        width: 80%;
-        height: 80px;
-        margin-left: 10%;
-        margin-top: 5%;
-        border-radius: 10px;
-    }
-
-    #scroll {
-        width: 100%;
-        height: 800px;
-        position: static;
-        top: 10%;
-        overflow: scroll;
-    }
-</style>
-
+    </body>
 </html>

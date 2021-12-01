@@ -41,7 +41,7 @@ app.get('/Participantes/', function (req, res) {
     })
 });
 app.get('/Mensajes/', function (req, res) {
-    db.all("SELECT * FROM Albums;", [], (err, rows) =>{        
+    db.all("SELECT * FROM Mensajes;", [], (err, rows) =>{        
         if (err){
             res.status(400).json({"error":err.message});
             return;

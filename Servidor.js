@@ -4,7 +4,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3');
 const url = require('url');
-
+var usuarioActual = 0;
 
 const db = new sqlite3.Database("./public/database/expressDB.db", (err) => {
   if (err) {
@@ -15,8 +15,6 @@ const db = new sqlite3.Database("./public/database/expressDB.db", (err) => {
   }
 });
 
-
-
 //especificamos el subdirectorio donde se encuentran las páginas estáticas
 app.use(express.static(__dirname + '/public'));
 
@@ -26,6 +24,13 @@ app.set('view engine', 'ejs'); //renderizar paginas con parametros
 app.use(bodyParser.urlencoded({ extended: false }));
 
 //app.use(express.json());
+
+app.get('/', (req, res) => {
+  res.render('index.ejs', { validacion: 'N'});
+})
+app.get('/Registro.ejs', (req, res) => {
+  res.render('Registro.ejs', { validacion: 'N'});
+})
 
 app.post('/ExpressChat', (req, res) => {
 
@@ -38,7 +43,7 @@ app.post('/ExpressChat', (req, res) => {
   var idusuario;
 
   //autentificacion                                 falta hacer sessiones
-  sql = 'SELECT * FROM usuarios WHERE correo = ?'
+  sql = 'SELECT * FROM usuarios WHERE correo = ?';
   db.get(sql, [correo], (err, row) => {
     if (err) {
       //res.status(400).json({ "error": err.message });
@@ -47,24 +52,27 @@ app.post('/ExpressChat', (req, res) => {
     } else {
       console.log(row)
       if (typeof row === 'undefined') {
-        res.status(400).json({ "error": 'Correo o contraseña incorrecto' });
+        res.status(400);
+        res.render('index.ejs', { validacion: 'I' })
       } else {
         if (correo == row.Correo && contrasena == row.Contrasena) {
-          console.log('Entro')
           idusuario = row.IdUsuario;
-          sql = 'select * from Chats where idchat IN (SELECT idchat FROM Participantes where idusuario = ?)'
+          sql = 'SELECT * FROM Chats WHERE IdChat IN (SELECT IdChat FROM Participantes WHERE IdUsuario = ?)'
           db.all(sql, [idusuario], (err, rows) => {
             console.log('Entro al 2 db');
             if (err) {
               res.status(400).json({ "error": err.message });
               return;
             } else {
+              usuarioActual = idusuario
               console.log(rows)
-              res.render('chat.ejs', { chats: rows })
+              res.status(200);
+              res.render('Chat.ejs', { chats: rows });
             }
           })
         } else {
-          res.status(400).json({ "error": 'Correo o contraseña incorrecto' });
+          res.status(400);
+          res.render('index.ejs', { validacion: 'I'})
         }
       }
 
@@ -72,39 +80,32 @@ app.post('/ExpressChat', (req, res) => {
   })
 })
 
+//este de registro ya sirve
 app.post('/registro', (req, res) => {
-  var nombre = req.body.nombre;
-  var correo = req.body.correo;
-  var contrasena = req.body.contrasena;
-  console.log(req.body)
-
-  var fecha = Date(Date.now());
-  fecha = fecha.toString();
-  console.log(fecha);
-
-  db.run('INSERT INTO Usuarios (IdUsuario, Nombre, Correo, Contrasena, FechaIngreso, Administrador, Activo) values (?,?,?,?,?,?,?)', [, nombre, correo, contrasena, , 'n', 'n'], (err, result) => {
+  var reqBody = req.body;
+  db.run('INSERT INTO Usuarios (Nombre, Correo, Contrasena, Administrador, Activo) VALUES(?, ?, ?, ?, ?);', [reqBody.nombre, reqBody.correo, reqBody.contrasena, 'U', 'S'], (err, result) => {
     if (err) {
-      res.status(400).json({ "error": err.message });
-      console.log(err)
+      res.status(400);
+      res.render('Registro.ejs', { validacion: 'I' });
       return;
     }
-    res.redirect('/');
+    res.status(200);
+    res.render('Registro.ejs', { validacion: 'C' });
   });
 })
 
 app.get('/resultadosBusqueda', (req, res) => {
-
   let usuario = req.query.usuario;
-  sql = 'select * from Usuarios where Nombre LIKE (?)'
-
+  sql = 'SELECT * FROM Usuarios WHERE Nombre LIKE (?)';
   db.all(sql, ['%' + usuario + '%'], (err, rows) => {
     console.log('Entro al db');
     if (err) {
       res.status(400).json({ "error": err.message });
       return;
     } else {
-      console.log(rows)
-      res.render('resultadosBusqueda.ejs', { users: rows, usuario: usuario })
+      console.log(rows);
+      res.status(200);
+      res.render('resultadosBusqueda.ejs', { users: rows, usuario: usuario });
     }
   })
 })
@@ -112,23 +113,40 @@ app.get('/resultadosBusqueda', (req, res) => {
 app.get('/Chat/:idChat', function (req, res) {
   console.log(req.params.idChat);
   var idChat = req.params.idChat;
-  sql = 'SELECT * FROM Mensajes WHERE idchat = ?';
+  sql = 'SELECT * FROM Mensajes WHERE IdChat = ?';
   db.all(sql, [idChat], (err, rows) => {
     console.log('Entro al db');
     if (err) {
       res.status(400).json({ "error": err.message });
       return;
     } else {
-      console.log(rows)
-      res.render('chat.ejs', { mensajes: rows })
-      //res.status(200).json({rows});
+      sql = 'SELECT * FROM Usuarios WHERE IdUsuario = ?';
+      db.all(sql, [usuarioActual], (err, fila) => {
+        if (err) {
+          res.status(400).json({ "error": err.message });
+          return;
+        } else {
+          sql = 'SELECT * FROM Usuarios u, Mensajes m WHERE u.IdUsuario != ? AND m.IdUsuario = u.IdUsuario';
+          db.all(sql, [usuarioActual], (err, fila2) => {
+            if (err) {
+              res.status(400).json({ "error": err.message });
+              return;
+            } else {
+              console.log(rows);
+              console.log(fila);
+              console.log(fila2);
+              console.log(usuarioActual);
+              res.status(200);
+              res.render('Chat.ejs', { mensajes: rows, usuarios: fila, usuarios2: fila2});
+            }
+          })
+        }
+      })
     }
   })
 });
 
-var server = app.listen(5000, () => {
-  console.log('Servidor Web Iniciado');
-});
+app.listen(5000, () => { console.log('Servidor Web Iniciado'); });
 
 
 
