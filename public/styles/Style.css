@@ -134,7 +134,8 @@ body{
 #conversacion{
     background-color: white;
     width: 69%;
-    height: 120vh;
+    height:100px;
+    /* height: 120vh; */
     text-align: center;
     border: 2px solid black;
     height: 100%;
@@ -225,7 +226,8 @@ body{
 }
 #scroll{
     width: 100%;
-    height: 99.4vh;
+    height:80%;
+    /* height: 99.4vh; */
     position: static;
     top: 10%;
     overflow: scroll;
@@ -302,6 +304,6 @@ body{
     float: left;
 }
 .escribirMensaje{ 
-    width: 1000px;
+    width: 800px;
     height: 10px;
 }

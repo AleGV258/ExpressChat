@@ -137,7 +137,7 @@ app.get('/Chat/:idChat', function (req, res) {
               console.log(fila2);
               console.log(usuarioActual);
               res.status(200);
-              res.render('Chat.ejs', { mensajes: rows, usuarios: fila, usuarios2: fila2 });
+              res.render('Chat.ejs', { mensajes: rows, usuarios: fila, usuarios2: fila2, idChat:idChat});
             }
           })
         }
@@ -147,21 +147,24 @@ app.get('/Chat/:idChat', function (req, res) {
 });
 
 
-app.post('/chat/enviarMensaje', function (req, res) {
-  console.log(req.body.mensajeEscrito);
-  //obtener idchat
-  //obtener id usuario
+app.post('/chat/enviarMensaje/:idChat/:idUsuario', function (req, res) {
+  // console.log(req.body.mensajeEscrito);
+  // console.log(req.params.idChat);
+  // console.log(req.params.idUsuario);
+  var mensaje = req.body.mensajeEscrito
+  var idChat = req.params.idChat;
+  var idUsuario = req.params.idUsuario;
 
-
-  // db.run('INSERT INTO Mensajes (Texto, IdChat, IdUsuario) VALUES(?, ?, ?);', [req.body.mensajeEscrito, IdChat, IdUsuario], (err, result)=>{
-  //     if (err){
-  //         res.status(400).json({"error":err.message});
-  //         return;
-  //     }else{
-
-  //     }
-  //     
-  // });
+  db.run('INSERT INTO Mensajes (Texto, IdChat, IdUsuario) VALUES(?, ?, ?);', [mensaje, idChat, idUsuario], (err, result)=>{
+      if (err){
+          res.status(400).json({"error":err.message});
+          return;
+      }else{
+        res.status(200);
+        res.redirect(req.get('referer'));
+      }
+      
+  });
 });
 
 

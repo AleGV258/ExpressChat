@@ -30,10 +30,10 @@
             </div>
         </div>
         <div id="conversacion">
-            <div id="scroll">
-                <% if(typeof mensajes === 'undefined'){ %>
-                    <!-- <h1>Parece que no tienes ningun mensaje</h1> -->
-                <% }else{ %>                
+            <% if(typeof mensajes === 'undefined'){ %>
+                <!-- <h1>Parece que no tienes ningun mensaje</h1> -->
+            <% }else{ %>  
+                <div id="scroll"></div>              
                     <% for(mensaje of mensajes){ %>
                         <% for(usuario of usuarios){ %>
                                 <% if(usuario.IdUsuario === mensaje.IdUsuario){ %>
@@ -53,14 +53,15 @@
                                 <% }; %>   
                         <% }; %>
                     <% }; %>
-                <% }; %>
-            </div>
-            <div class="escribirMensaje">
-                <form action="enviarMensaje" method="post">
-                    <input type="text" name="mensajeEscrito" size="10" placeholder="Escribe un mensaje ..."required class="escribirMensajeInput">
-                    <input type="submit" value="Enviar" class="enviarMensaje">
-                </form>
-            </div>
+                </div>
+                <br>
+                <div class="escribirMensaje">
+                    <form action="enviarMensaje/<%= idChat %>/<%= usuario.IdUsuario %>" method="post">
+                        <input type="text" name="mensajeEscrito" size="10" placeholder="Escribe un mensaje ..."required class="escribirMensajeInput">
+                        <input type="submit" value="Enviar" class="enviarMensaje">
+                    </form>
+                </div>
+            <% }; %>        
         </div>
     </body>
 </html>
