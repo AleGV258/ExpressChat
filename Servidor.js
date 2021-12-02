@@ -4,7 +4,9 @@ const app = express();
 const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3');
 const url = require('url');
-var usuarioActual = 0;
+const session = require('express-session');
+
+
 
 const db = new sqlite3.Database("./public/database/expressDB.db", (err) => {
   if (err) {
@@ -23,7 +25,13 @@ app.set('view engine', 'ejs'); //renderizar paginas con parametros
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-//app.use(express.json());
+
+app.use(session({
+  secret: 'ProySisDist123',
+  resave: false,
+  saveUninitialized: false,
+}))
+
 
 app.get('/', (req, res) => {
   res.render('index.ejs', { validacion: 'N' });
@@ -39,10 +47,10 @@ app.post('/ExpressChat', (req, res) => {
   console.log(req.body)
 
   console.log(correo + " y " + contrasena);
-  var entro = new Boolean(false);
+  //var entro = new Boolean(false);
   var idusuario;
 
-  //autentificacion                                 falta hacer sessiones
+  //autentificacion                                
   sql = 'SELECT * FROM usuarios WHERE correo = ?';
   db.get(sql, [correo], (err, row) => {
     if (err) {
@@ -64,7 +72,9 @@ app.post('/ExpressChat', (req, res) => {
               res.status(400).json({ "error": err.message });
               return;
             } else {
-              usuarioActual = idusuario
+
+              req.session.id_Usuario = idusuario
+
               console.log(rows)
               res.status(200);
               res.render('Chat.ejs', { chats: rows });
@@ -95,6 +105,7 @@ app.post('/registro', (req, res) => {
 })
 
 app.get('/resultadosBusqueda', (req, res) => {
+  var idUsuario = req.session.id_Usuario;
   let usuario = req.query.usuario;
   sql = 'SELECT * FROM Usuarios WHERE Nombre LIKE (?)';
   db.all(sql, ['%' + usuario + '%'], (err, rows) => {
@@ -111,7 +122,6 @@ app.get('/resultadosBusqueda', (req, res) => {
 })
 
 app.get('/Chat/:idChat', function (req, res) {
-  console.log(req.params.idChat);
   var idChat = req.params.idChat;
   sql = 'SELECT * FROM Mensajes WHERE IdChat = ?';
   db.all(sql, [idChat], (err, rows) => {
@@ -121,13 +131,13 @@ app.get('/Chat/:idChat', function (req, res) {
       return;
     } else {
       sql = 'SELECT * FROM Usuarios WHERE IdUsuario = ?';
-      db.all(sql, [usuarioActual], (err, fila) => {
+      db.all(sql, [req.session.id_Usuario], (err, fila) => {
         if (err) {
           res.status(400).json({ "error": err.message });
           return;
         } else {
           sql = 'SELECT * FROM Usuarios u, Mensajes m WHERE u.IdUsuario != ? AND m.IdUsuario = u.IdUsuario';
-          db.all(sql, [usuarioActual], (err, fila2) => {
+          db.all(sql, [req.session.id_Usuario], (err, fila2) => {
             if (err) {
               res.status(400).json({ "error": err.message });
               return;
@@ -135,9 +145,9 @@ app.get('/Chat/:idChat', function (req, res) {
               console.log(rows);
               console.log(fila);
               console.log(fila2);
-              console.log(usuarioActual);
+              console.log(req.session.id_Usuario);
               res.status(200);
-              res.render('Chat.ejs', { mensajes: rows, usuarios: fila, usuarios2: fila2, idChat:idChat});
+              res.render('Chat.ejs', { mensajes: rows, usuarios: fila, usuarios2: fila2, idChat: idChat });
             }
           })
         }
@@ -155,17 +165,62 @@ app.post('/chat/enviarMensaje/:idChat/:idUsuario', function (req, res) {
   var idChat = req.params.idChat;
   var idUsuario = req.params.idUsuario;
 
-  db.run('INSERT INTO Mensajes (Texto, IdChat, IdUsuario) VALUES(?, ?, ?);', [mensaje, idChat, idUsuario], (err, result)=>{
-      if (err){
-          res.status(400).json({"error":err.message});
-          return;
-      }else{
-        res.status(200);
-        res.redirect(req.get('referer'));
-      }
-      
+  db.run('INSERT INTO Mensajes (Texto, IdChat, IdUsuario) VALUES(?, ?, ?);', [mensaje, idChat, idUsuario], (err, result) => {
+    if (err) {
+      res.status(400).json({ "error": err.message });
+      return;
+    } else {
+      res.status(200);
+      res.redirect(req.get('referer'));
+    }
+
   });
 });
+
+app.post('/NuevoGrupo', function (req, res) {
+  var nombreGrupo = req.body.nombreGrupo;
+  var idUsuarioActual = req.session.id_Usuario;
+
+  db.run('INSERT INTO Chats (IdChat, NombreChat) VALUES (?,?);', [, nombreGrupo], (err, result) => {
+    if (err) {
+      res.status(400).json({ "error": err.message });
+      return;
+    } else {
+
+      sql = 'SELECT IdUsuario from Participantes WHERE idchat IN (SELECT idchat FROM Chats WHERE IdChat IN (SELECT IdChat FROM Participantes WHERE IdUsuario = ?))' //filtra usuarios con los que esta relacionado en grupo o como amigos (se repiten y sale el mimo usuario actual)
+      db.all(sql, [idUsuarioActual], (err, rows) => {
+        console.log('Entro al 2 db');
+        if (err) {
+          res.status(400).json({ "error": err.message });
+          return;
+        } else {
+          console.log(rows)
+
+
+          //falta agregar a usuario actual a ese chat
+          //falta obtener esos usuarios de rows y enviarlos al ejs para que los muestre y se pueda ejecutar agregarUsuario
+        
+        
+        }
+      })
+    }
+  });
+});
+
+app.get('/agregarUsuario/:idChat/:idUsuario', (req, res) => {
+
+  // sql = 'INSERT INTO Participantes (IdParticipante, IdChat, IdUsuario) VALUES (?,?,?);';
+  // db.run(sql, [, IdChat, IdUsuario], (err, result) => {
+  //   if (err) {
+  //     res.status(400).json({ "error": err.message });
+  //     return;
+  //   } else {
+  //     res.status(200);
+  //     res.redirect(req.get('referer'));
+  //   }
+
+  // });
+})
 
 
 app.listen(5000, () => { console.log('Servidor Web Iniciado'); });
@@ -179,21 +234,6 @@ app.listen(5000, () => { console.log('Servidor Web Iniciado'); });
 
 
 
-// var users = [  //algo asi es lo que se obtiene de la bd, ya que obtenemos un json
-    //     {
-    //       'name': 'Edinson',
-    //       'email': 'edinsoncode@example.com',
-    //       'job': 'developer',
-    //       'age': 24
-    //     },
-    //     {
-    //       'name': 'Richard',
-    //       'email': 'richard@example.com',
-    //       'job': 'developer',
-    //       'age': 24
-    //     },
-    // ]
-    // res.render('chat.ejs', { users: users })
 
 
 
@@ -227,58 +267,3 @@ app.listen(5000, () => { console.log('Servidor Web Iniciado'); });
   // pagina += `El usuario es ${usuario}`;
   // pagina += '</body></html>';
   // res.send(pagina);
-
-
-
-
-
-
-
-// net = require('net');
-
-// var tokens, newData, msg;
-// var sockets = [];
-
-// const server = net.createServer()
-
-// server.on('connection', (socket)=>{
-//     //socket.write('Usuario: ' + socket.remoteAddress + ':' + socket.remotePort)
-//     sockets.push(socket) //hacer un array de socket conectados
-//     socket.on('data', (data)=>{
-//         if(data == 'superChat'){
-//             chat = socket;
-//         }else{
-//             newData = data.toString('utf-8');
-//             newData = newData.replace(/[^A-Za-z0-9.@\^\-\s]/g, "");
-//             tokens = newData.split('^');
-//             //console.log(newData)
-//             for(let i = 0; i < sockets.length; i++){
-//                 if(tokens[0] == 'j'){
-//                     msg = 'm^Server@127.0.0.1^-^' + tokens[1].split('@')[0] + ' has joined from ' + tokens[1].split('@')[1] + '\n';
-//                 }else if(tokens[0] == 'm'){
-//                     msg = 'm^Server@127.0.01^-^' + tokens[1].split('@')[0] + ': ' + tokens[3] + '\n';
-//                 }else if(tokens[0] == 'p'){
-//                     msg = 'm^Server@127.0.01^-^' + tokens[1].split('@')[0] + ' has departed from the Server Chat\n';
-//                 }
-//                 sockets[i].write(msg);
-//             }
-//             //chat.write(msg);
-//             console.log(msg);
-//         }
-//     })
-//     socket.on('error', (err)=>{
-//         msg = 'm^Server@127.0.01^-^' + tokens[1].split('@')[0] + ' has departed from the Server Chat\n';
-//         console.log(msg);
-//     })
-//     socket.on('close', ()=>{
-//         msg = 'm^Server@127.0.01^-^' + tokens[1].split('@')[0] + ' has departed from the Server Chat\n';
-//         for(let i = 0; i < sockets.length; i++){
-//             sockets[i].write(msg);
-//         }
-//         socket.destroy();
-//     })
-// })
-
-// server.listen(1234, '127.0.0.1', ()=>{
-//     console.log('El servidor esta escuchando en la puerta ' + server.address().port + '\n');
-// })
