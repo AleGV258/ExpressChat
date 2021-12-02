@@ -33,7 +33,7 @@
             <% if(typeof mensajes === 'undefined'){ %>
                 <!-- <h1>Parece que no tienes ningun mensaje</h1> -->
             <% }else{ %>  
-                <div id="scroll"></div>              
+                <div id="scroll">             
                     <% for(mensaje of mensajes){ %>
                         <% for(usuario of usuarios){ %>
                                 <% if(usuario.IdUsuario === mensaje.IdUsuario){ %>

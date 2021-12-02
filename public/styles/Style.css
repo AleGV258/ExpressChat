@@ -134,11 +134,9 @@ body{
 #conversacion{
     background-color: white;
     width: 69%;
-    height:100px;
-    /* height: 120vh; */
+    height:100%;
     text-align: center;
     border: 2px solid black;
-    height: 100%;
     float: left;
 }
 #buscador{
@@ -226,7 +224,7 @@ body{
 }
 #scroll{
     width: 100%;
-    height:80%;
+    height:700px;
     /* height: 99.4vh; */
     position: static;
     top: 10%;
@@ -305,5 +303,9 @@ body{
 }
 .escribirMensaje{ 
     width: 800px;
-    height: 10px;
+    height: 100px;
 }
+/* .enviarMensaje{
+    width: 50px;
+    height: 50px;
+} */
