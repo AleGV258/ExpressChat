@@ -10,13 +10,13 @@
 </head>
     <% if(typeof users === 'undefined'){ %>
         
-    <% }else{ %>  
+    <% }else{ %>          
         <div id="scroll2">
             <% for( user of users) { %>
                 <div id="">
                     Nombre: <%= user.Nombre %> <br>
                     Email: <%= user.Correo %>
-                    <div id="usuarios" name="<%= chat.IdChat %>" onclick="window.location.href = 'AgregarAChat/<%= nombreGrupo %>/<%= user.IdUsuario %>'">
+                    <div id="usuarios" name="<%= chat.IdChat %>" onclick="window.location.href = 'agregarUsuario/<%= IdChat %>/<%= user.IdUsuario %>'">
                         Agregar
                     </div>
                 </div>

@@ -45,53 +45,55 @@
                             <h1 class="titulo"><%= chatactual.NombreChat %></h1>
                         <% }; %>     
                     </div>
-                    <div id="scroll">            
-                        <% for(mensaje of mensajes){ %>
-                            <% if(mensaje.IdUsuario === actual){ %>
-                                <div class="mensajePropio" name="">
-                                    <nav id="menu">
-                                        <ul>
-                                          <li><img src="/images/masopciones.png" class="imageMas">
+                    <div id="scroll">      
+                        <% if(typeof mensajes === 'undefined') { %>
+                            <% for(mensaje of mensajes){ %>
+                                <% if(mensaje.IdUsuario === actual){ %>
+                                    <div class="mensajePropio" name="">
+                                        <nav id="menu">
                                             <ul>
-                                              <li><a href="#">Modificar</a></li>
-                                              <li><a href="#">Eliminar</a></li>
+                                              <li><img src="/images/masopciones.png" class="imageMas">
+                                                <ul>
+                                                  <li><a href="#">Modificar</a></li>
+                                                  <li><a href="#">Eliminar</a></li>
+                                                </ul>
+                                              </li>
                                             </ul>
-                                          </li>
-                                        </ul>
-                                    </nav>
-                                    <h2 class="usuarioMensaje" style="margin-block-end: 0%;"><%= mensaje.Nombre %></h2><br>
-                                    <!-- <h2 class=""><%= mensaje.IdMensaje %></h2><br> -->
-                                    <h2 class="textoMensaje"><%= mensaje.Texto %></h2><br>
-                                    <h2 class="fechaMensaje"><%= mensaje.Fecha %></h2><br>
-                                </div>
-                                <div class="esqPropio"></div>
-                            <% }else{ %>
-                                <div class="mensajeOtro" name="">
-                                    <nav id="menu">
-                                        <ul>
-                                          <li><img src="/images/masopciones.png" class="imageMas">
+                                        </nav>
+                                        <h2 class="usuarioMensaje" style="margin-block-end: 0%;"><%= mensaje.Nombre %></h2><br>
+                                        <!-- <h2 class=""><%= mensaje.IdMensaje %></h2><br> -->
+                                        <h2 class="textoMensaje"><%= mensaje.Texto %></h2><br>
+                                        <h2 class="fechaMensaje"><%= mensaje.Fecha %></h2><br>
+                                    </div>
+                                    <div class="esqPropio"></div>
+                                <% }else{ %>
+                                    <div class="mensajeOtro" name="">
+                                        <nav id="menu">
                                             <ul>
-                                              <li><a href="#">Modificar</a></li>
-                                              <li><a href="#">Eliminar</a></li>
+                                              <li><img src="/images/masopciones.png" class="imageMas">
+                                                <ul>
+                                                  <li><a href="#">Modificar</a></li>
+                                                  <li><a href="#">Eliminar</a></li>
+                                                </ul>
+                                              </li>
                                             </ul>
-                                          </li>
-                                        </ul>
-                                    </nav>
-                                    <h2 class="usuarioMensaje" style="margin-block-end: 0%;"><%= mensaje.Nombre %></h2><br>
-                                    <!-- <h2 class=""><%= mensaje.IdMensaje %></h2><br> -->
-                                    <h2 class="textoMensaje"><%= mensaje.Texto %></h2><br>
-                                    <h2 class="fechaMensaje"><%= mensaje.Fecha %></h2><br>
-                                </div>
-                                <div class="esqOtro"></div>
-                            <% }; %>   
-                        <% }; %>
-                    </div><br>
-                    <div class="escribirMensaje">
-                        <form action="enviarMensaje/<%= mensaje.IdChat %>/<%= actual %>" method="post">
-                            <input type="text" name="mensajeEscrito" size="10" placeholder="Escribe un mensaje ..." required class="escribirMensajeInput">
-                            <button type="submit" value="Enviar" class="botonEnviar"><img src="/images/enviar.png" class="imageEnviar"></button>
-                        </form>
-                    </div>
+                                        </nav>
+                                        <h2 class="usuarioMensaje" style="margin-block-end: 0%;"><%= mensaje.Nombre %></h2><br>
+                                        <!-- <h2 class=""><%= mensaje.IdMensaje %></h2><br> -->
+                                        <h2 class="textoMensaje"><%= mensaje.Texto %></h2><br>
+                                        <h2 class="fechaMensaje"><%= mensaje.Fecha %></h2><br>
+                                    </div>
+                                    <div class="esqOtro"></div>
+                                <% }; %>   
+                            <% }; %>
+                            </div><br>
+                            <div class="escribirMensaje">
+                                <form action="enviarMensaje/<%= mensaje.IdChat %>/<%= actual %>" method="post">
+                                    <input type="text" name="mensajeEscrito" size="10" placeholder="Escribe un mensaje ..." required class="escribirMensajeInput">
+                                    <button type="submit" value="Enviar" class="botonEnviar"><img src="/images/enviar.png" class="imageEnviar"></button>
+                                </form>
+                            </div>
+                        <% } %>                                                    
                 <% }; %>        
             </div>
         </div>
