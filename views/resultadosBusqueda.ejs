@@ -6,39 +6,41 @@
         <title>Formulario</title>
     </head>
     <body>
-        <div id="chats">
-            <div id="buscador">
-                <form action="resultadosBusqueda" method="">
-                    <input type="text" name="usuario" size="10" id="barraBuscar"><br>
-                    <button type="submit" value="buscar" id="botonBuscar"><img src="/images/search.png" class="image"></button>
+        <div class="todo">
+            <div id="chats">
+                <div id="buscador">
+                    <form action="resultadosBusqueda" method="">
+                        <input type="text" name="usuario" size="10" id="barraBuscar"><br>
+                        <button type="submit" value="buscar" id="botonBuscar"><img src="/images/search.png" class="image"></button>
+                    </form>
+                </div>
+                <div id="result">Resultados de búsqueda: <%= usuario %></div>
+                <div id="scroll3">
+                    <% for( user of users) { %>
+                        <div id="usuarios2">
+                            Nombre: <%= user.Nombre %> <br>
+                            Email: <%= user.Correo %>
+                        </div>
+                    <% }; %>
+                </div>
+                <div id="regresar2">
+                    <!-- falta que regrese a los chats -->
+                    <a href="javascript:history.back(-1);" class="regresar">Chats</a>
+                </div>
+                <div id="regresar2">
+                    <a href="../" class="regresar">Salir</a>
+                </div>
+            </div>
+            <div id="grupo">
+                <div>
+                    <h1 class="tituloGrupo">Crear nuevo chat grupal</h1>
+                </div>
+                <form action="NuevoGrupo" method="post">
+                    <label for="" class="textoGrupo">Ingrese el nombre del grupo:</label><br>
+                    <input type="text" name="nombreGrupo" size="10" placeholder="Nombre del grupo ..." required class="inputGrupo"><br>
+                    <input type="submit" value="Crear" class="crearGrupo"><br>
                 </form>
             </div>
-            <div id="result">Resultados de búsqueda: <%= usuario %></div>
-            <div id="scroll2">
-                <% for( user of users) { %>
-                    <div id="usuarios2">
-                        Nombre: <%= user.Nombre %> <br>
-                        Email: <%= user.Correo %>
-                    </div>
-                <% }; %>
-            </div>
-            <div id="regresar" style="margin-bottom: 15%;">
-                <!-- falta que regrese a los chats -->
-                <a href="./" class="regresar">Chats</a>
-            </div>
-            <div id="regresar">
-                <a href="./" class="regresar">Salir</a>
-            </div>
-        </div>
-        <div id="grupo">
-            <div>
-                <h1>Crear nuevo chat grupal</h1>
-              </div>
-              <form action="NuevoGrupo" method="post">
-                <label for="">Ingrese el nombre del grupo:</label><br>
-                <input type="text" name="nombreGrupo" size="10" placeholder="Nombre del grupo ..." required><br>
-                <input type="submit" value="Crear"><br>
-              </form>
         </div>
     </body>
 </html>
