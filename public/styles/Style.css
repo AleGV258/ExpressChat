@@ -261,13 +261,13 @@ body{
 }
 #scroll3{
     width: 100%;
-    height: 58%;
+    height: 55.5%;
     position: static;
     overflow: scroll;
 }
 #result{
     width: 100%;
-    height: 3vh;
+    height: 5.5vh;
     text-align: center;
     font-size: medium;
     font-family: "Letra Recta";
@@ -277,6 +277,7 @@ body{
     box-sizing: border-box;
     float: left;
     word-break: break-all;
+    padding: 0% 7%;
 }
 #regresar{
     background-color: blue;
@@ -616,3 +617,91 @@ body{
     color: whitesmoke;
 }
 
+/* agregar usuario */
+.tituloAgregar{
+    background-color: #FF2A74;
+    color: whitesmoke;
+    padding: 2%;
+    width: 100%;
+    height: 3vh;
+    margin: 0 0 3% 0;
+    text-align: center;
+    word-break: break-all;
+    font-size: larger;
+    letter-spacing: 1px;
+}
+.usuarioAgregar{
+    background-color: #99EFED;
+    border: 2px solid black;
+    width: 70%;
+    height: auto;
+    margin: 0 15% 3% 15%;
+    border-radius: 10px;
+    font-size: x-large;
+    font-weight: 600;
+    font-family: "Letra Normal";
+    letter-spacing: 0.5px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    box-sizing: border-box;
+}
+.usuarioAgregar2{
+    width: 70%;
+    height: 100%;
+    box-sizing: border-box;
+}
+.botonAgregar{
+    width: 100%;
+    height: 100%;
+    background-color: blue;
+    color: whitesmoke;
+    font-family: 'Letra Redondeada';
+    font-size: large;
+    padding: 10% 20%;
+    border: 2px solid black;
+    border-radius: 50px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+.botonAgregar:hover{
+    background-color: #FF82A2;
+    color: black;
+}
+.botonAgregar:active{
+    color: black;
+    background-color: whitesmoke;
+}
+.agregar{
+    width: 15%;
+    height: 40%;
+}
+.textoAgregar{
+    width: 100%;
+    padding: 2%;
+    margin: 1% 0;
+    font-size: large;
+    font-family: 'Letra Recta';
+    box-sizing: border-box;
+    letter-spacing: 1px;
+    word-break: break-all;
+}
+.regresar3{
+    width: 50%;
+    height: 3vh;
+    margin: 0 25% 2% 25%;
+    padding: 1%;
+    background-color: blue;
+    border: 2px solid black;
+    border-radius: 50px;
+    text-align: center;
+}
+.regresar3:hover{
+    color: black;
+    background-color: #FF82A2;
+}
+.regresar3:active{
+    color: black;
+    background-color: whitesmoke;
+}
