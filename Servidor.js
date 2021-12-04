@@ -195,25 +195,18 @@ app.post('/NuevoGrupo', function (req, res) {
             res.status(400).json({ "error": err.message });
             return;
           } else {
-            db.run('INSERT INTO Participantes (IdChat, IdUsuario) VALUES (?, ?);', [idChat, idUsuarioActual], (err, result2) => {
+            db.all('SELECT * FROM Usuarios WHERE IdUsuario != ?;', [idUsuarioActual], (err, infoUsuarios) => {
               if (err) {
                 res.status(400).json({ "error": err.message });
                 return;
               } else {
-                db.all('SELECT * FROM Usuarios WHERE IdUsuario != ?;', [idUsuarioActual], (err, infoUsuarios) => {
-                  if (err) {
-                    res.status(400).json({ "error": err.message });
-                    return;
-                  } else {
-                    res.status(200);
-                    res.render('participantesGrupo.ejs', { users: infoUsuarios, idChatAgregar: idChat });
-                  }
-                })
+                res.status(200);
+                res.render('participantesGrupo.ejs', { users: infoUsuarios, idChatAgregar: idChat });
               }
             })
           }
         })
-      },1000);
+      },2000);
     }
   })
 });
@@ -222,9 +215,8 @@ app.post('/agregarUsuario/:idChat/:idUsuario', (req, res) => {
   var idChat = req.params.idChat;
   var idUsuario = req.params.idUsuario;
   var idUsuarioActual = req.session.id_Usuario;
-
-  console.log(idChat)
   
+  db.run('INSERT INTO Participantes (IdChat, IdUsuario) VALUES (?, ?);', [idChat, idUsuarioActual], (err, result2) => {if (err) {}})
   sql = 'INSERT INTO Participantes (IdChat, IdUsuario) VALUES (?,?);';
   db.run(sql, [idChat, idUsuario], (err, result) => {
     if (err) {
@@ -250,7 +242,7 @@ app.post('/agregarUsuario/:idChat/:idUsuario', (req, res) => {
             })
           }
         })
-      },1000);
+      },2000);
     }
   });
 })
