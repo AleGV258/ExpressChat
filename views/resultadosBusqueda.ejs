@@ -10,7 +10,7 @@
             <div id="chats">
                 <div id="buscador">
                     <form action="resultadosBusqueda" method="">
-                        <input type="text" name="usuario" size="10" id="barraBuscar"><br>
+                        <input type="text" name="usuario" size="10" id="barraBuscar" placeholder="Busca un chat..."><br>
                         <button type="submit" value="buscar" id="botonBuscar"><img src="/images/search.png" class="image"></button>
                     </form>
                 </div>
@@ -18,7 +18,7 @@
                 <div id="scroll3">
                     <% for( user of users) { %>
                         <div id="usuarios2">
-                            Nombre: <%= user.Nombre %> <br>
+                            Nombre: <%= user.Nombre %><br>
                             Email: <%= user.Correo %>
                         </div>
                     <% }; %>

@@ -1,30 +1,36 @@
 <!DOCTYPE html>
 <html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/styles/Style.css">
-    <title>Agregar Usuarios</title>
-</head>
-    <% if(typeof users === 'undefined'){ %>
-        
-    <% }else{ %>          
-        <div id="scroll2">
-            <% for( user of users) { %>
-                <div id="">
-                    Nombre: <%= user.Nombre %> <br>
-                    Email: <%= user.Correo %>
-                    <div id="usuarios" name="<%= chat.IdChat %>" onclick="window.location.href = 'agregarUsuario/<%= IdChat %>/<%= user.IdUsuario %>'">
-                        Agregar
+    <head>
+        <meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/styles/Style.css">
+        <title>Agregar Usuarios</title>
+    </head>
+    <body>
+        <% if(typeof users === 'undefined'){ %>
+            <% location.href('./Error404.ejs'); %>
+        <% }else{ %>       
+            <div class="todo">
+                <% for(agregar of idChatAgregar){ %>
+                    <h1 class="tituloAgregar">Agregar participantes a <%= agregar.NombreChat %></h1>
+                <% }; %>
+                <% for(user of users){ %>
+                    <div class="usuarioAgregar">
+                        <div class="usuarioAgregar2">
+                            <h1 class="textoAgregar">Nombre: <%= user.Nombre %></h1>
+                            <h1 class="textoAgregar">Email: <%= user.Correo %></h1>
+                        </div>
+                        <% for(agregar of idChatAgregar){ %>
+                            <form action="/agregarUsuario/<%= agregar.IdChat %>/<%= user.IdUsuario %>" method="post" class="agregar">
+                            <button type="submit" class="botonAgregar">Agregar</button>
+                            </form>
+                            <% break; %>
+                        <% }; %>
                     </div>
-                </div>
-            <% }; %>
-        </div>
-    <% } %>
-<body>
-
-</body>
-
+                <% }; %>
+                <div class="regresar3">
+                    <a href="../" class="regresar">No crear grupo</a>
+                </div><br>
+            </div>
+        <% } %>
+    </body>
 </html>
