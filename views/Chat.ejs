@@ -53,8 +53,17 @@
                                         <ul>
                                           <li><img src="/images/masopciones.png" class="imageMas">
                                             <ul>
-                                              <li><a href="#">Modificar</a></li>
-                                              <li><a href="#">Eliminar</a></li>
+                                              <li><a>Modificar</a>
+                                                <ul>
+                                                    <li>
+                                                    <form action="ModificarMensaje/<%= mensaje.IdMensaje %>" method="">
+                                                        <input type="text" name="TextoMensajeModificar" size="10" placeholder="Escribe el nuevo mensaje ..." required>
+                                                        <button type="submit" value="Listo" class="botonEnviar"><img src="/images/enviar.png" class="imageEnviar"></button>   
+                                                    </form>                                                  
+                                                    </li>                                                    
+                                                </ul>
+                                              </li>
+                                              <li><a onclick="window.location.href = 'EliminarMensaje/<%= mensaje.IdMensaje %>'">Eliminar</a></li>
                                             </ul>
                                           </li>
                                         </ul>
@@ -66,16 +75,7 @@
                                 <div class="esqPropio"></div>
                             <% }else{ %>
                                 <div class="mensajeOtro" name="">
-                                    <nav id="menu">
-                                        <ul>
-                                          <li><img src="/images/masopciones.png" class="imageMas">
-                                            <ul>
-                                              <li><a href="#">Modificar</a></li>
-                                              <li><a href="#">Eliminar</a></li>
-                                            </ul>
-                                          </li>
-                                        </ul>
-                                    </nav>
+                                    
                                     <h2 class="usuarioMensaje" style="margin-block-end: 0%;"><%= mensaje.Nombre %></h2><br>
                                     <h2 class="textoMensaje"><%= mensaje.Texto %></h2><br>
                                     <h2 class="fechaMensaje"><%= mensaje.Fecha %></h2><br>

@@ -121,31 +121,31 @@ app.get('/Chat/:idChat', function (req, res) {
   var usuarioActual = req.session.id_Usuario;
   sql = 'SELECT * FROM Chats c, Usuarios u, Participantes p WHERE c.IdChat = p.IdChat AND u.IdUsuario = p.IdUsuario AND u.IdUsuario = ? ORDER BY c.IdChat ASC;';
   db.all(sql, [usuarioActual], (err, comprobar) => {
-    if(err){
+    if (err) {
       res.status(400).json({ "error": err.message });
       return;
-    }else{
+    } else {
       comprobar.forEach((fila) => {
-        if(fila.IdChat == idChat){
+        if (fila.IdChat == idChat) {
           sql = 'SELECT * FROM Mensajes m, Usuarios u WHERE m.IdChat = ? AND m.IdUsuario = u.IdUsuario ORDER BY m.IdMensaje ASC;';
           db.all(sql, [idChat], (err, rows) => {
             console.log('Entro al db');
-            if(err){
+            if (err) {
               res.status(400).json({ "error": err.message });
               return;
-            }else{
+            } else {
               sql = 'SELECT * FROM Chats WHERE IdChat = ?;';
               db.all(sql, [idChat], (err, rows2) => {
-                if(err){
+                if (err) {
                   res.status(400).json({ "error": err.message });
                   return;
-                }else{
+                } else {
                   sql = 'SELECT * FROM Chats c, Usuarios u, Participantes p WHERE c.IdChat = p.IdChat AND u.IdUsuario = p.IdUsuario AND u.IdUsuario = ? ORDER BY c.IdChat ASC;';
                   db.all(sql, [usuarioActual], (err, chatmenu) => {
-                    if(err){
+                    if (err) {
                       res.status(400).json({ "error": err.message });
                       return;
-                    }else{
+                    } else {
                       res.status(200);
                       res.render('Chat.ejs', { mensajes: rows, actual: usuarioActual, chatActual: rows2, chatMenu: chatmenu });
                     }
@@ -189,7 +189,7 @@ app.post('/NuevoGrupo', function (req, res) {
       res.status(400).json({ "error": err.message });
       return;
     } else {
-      setTimeout(function(){
+      setTimeout(function () {
         db.all('SELECT * FROM Chats WHERE NombreChat = ?;', [nombreGrupo], (err, idChat) => {
           if (err) {
             res.status(400).json({ "error": err.message });
@@ -206,7 +206,7 @@ app.post('/NuevoGrupo', function (req, res) {
             })
           }
         })
-      },2000);
+      }, 2000);
     }
   })
 });
@@ -215,15 +215,15 @@ app.post('/agregarUsuario/:idChat/:idUsuario', (req, res) => {
   var idChat = req.params.idChat;
   var idUsuario = req.params.idUsuario;
   var idUsuarioActual = req.session.id_Usuario;
-  
-  db.run('INSERT INTO Participantes (IdChat, IdUsuario) VALUES (?, ?);', [idChat, idUsuarioActual], (err, result2) => {if (err) {}})
+
+  db.run('INSERT INTO Participantes (IdChat, IdUsuario) VALUES (?, ?);', [idChat, idUsuarioActual], (err, result2) => { if (err) { } })
   sql = 'INSERT INTO Participantes (IdChat, IdUsuario) VALUES (?,?);';
   db.run(sql, [idChat, idUsuario], (err, result) => {
     if (err) {
       res.status(400).json({ "error": err.message });
       return;
     } else {
-      setTimeout(function(){
+      setTimeout(function () {
         sql = 'SELECT DISTINCT(u.IdUsuario), u.Nombre, u.Correo FROM Usuarios u, Participantes p WHERE u.IdUsuario != ? AND u.IdUsuario = p.IdUsuario AND u.IdUsuario NOT IN (SELECT IdUsuario FROM Participantes WHERE IdChat = ?);';
         db.all(sql, [idUsuarioActual, idChat], (err, infoUsuarios) => {
           if (err) {
@@ -242,10 +242,45 @@ app.post('/agregarUsuario/:idChat/:idUsuario', (req, res) => {
             })
           }
         })
-      },2000);
+      }, 2000);
     }
   });
 })
+
+
+
+app.get('/Chat/EliminarMensaje/:IdMensaje', function (req, res) {
+  var IdMensaje = req.params.IdMensaje;
+
+  sql = 'DELETE FROM Mensajes WHERE IdMensaje = ?;';
+  db.run(sql, [IdMensaje], (err, result) => {
+    if (err) {
+      res.status(400).json({ "error": err.message });
+      return;
+    } else {
+      res.status(200);
+      res.redirect(req.get('referer'));
+    }
+  });
+});
+
+
+app.get('/Chat/ModificarMensaje/:IdMensaje', function (req, res) {
+  var IdMensaje = req.params.IdMensaje;
+  var Texto = req.query.TextoMensajeModificar
+  console.log('El nuevo mensaje es : ' + req.query.TextoMensajeModificar)
+  sql = "UPDATE Mensajes  SET Texto = ? WHERE IdMensaje= ?";
+  db.run(sql, [Texto, IdMensaje], (err, result) => {
+    if (err) {
+      res.status(400).json({ "error": err.message });
+      return;
+    } else {
+      res.status(200);
+      res.redirect(req.get('referer'));
+    }
+  });
+});
+
 
 // app.get('*', function(req, res){
 //   res.status(404);
