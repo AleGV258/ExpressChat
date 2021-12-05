@@ -121,14 +121,18 @@ body{
 }
 .barranegra{
     width: 100%;
-    height: 8%;
+    height: 8vh;
     background-color: black;
 }
 .titulo{
+    width: 60%;
+    margin: 0 20% 0 20%;
     color: whitesmoke;
     text-align: center;
     padding: 1%;
     font-size: x-large;
+    box-sizing: border-box;
+    float: left;
 }
 /* Chats */
 ::-webkit-scrollbar{
@@ -566,49 +570,66 @@ body{
 }
 #menu ul{
     background-color: whitesmoke;
-}
-#menu ul{
-  list-style: none;
-  margin: 0;
-  padding: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 #menu ul a{
-  display: block;
-  color: black;
-  text-decoration: none;
-  font-weight: 400;
-  font-size: 15px;
-  padding: 10px;
-  font-family: 'Letra Recta';
-  letter-spacing: 1px;
+    display: block;
+    color: black;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 15px;
+    padding: 10px;
+    font-family: 'Letra Recta';
+    letter-spacing: 1px;
 }
 #menu ul li{
-  position: relative;
-  float: left;
-  margin: 0;
-  padding: 0;
+    position: relative;
+    float: left;
+    margin: 0;
+    padding: 0;
 }
 #menu ul ul{
-  display: none;
-  position: absolute;
-  top: 70%;
-  right: 0;
-  padding: 0;
-  z-index: 3;
+    display: none;
+    position: absolute;
+    top: 70%;
+    right: 0;
+    padding: 0;
+    z-index: 3;
 }
 #menu ul ul li{
-  float: none;
-  width: 150px
+    float: none;
+    width: 140px
 }
 #menu ul ul a{
-  line-height: 100%;
-  padding: 10px 15px;
+    line-height: 100%;
+    padding: 10px 15px;
+}
+#menu ul ul ul{
+    display: none;
+    position: absolute;
+    top: 0%;
+    right: 100%;
+    padding: 0;
+    z-index: 4;
+}
+#menu ul ul ul li{
+    float: none;
+    width: 300px;
+    padding: 10px;
 }
 #menu ul li:hover > ul{
-  display: block;
+    display: block;
 }
 #menu ul li ul li:hover{
     background: rgb(192, 192, 192);
+}
+#menu ul li ul li ul li:hover{
+    background: whitesmoke;
+}
+#menu ul li ul li ul li:active{
+    background: whitesmoke;
 }
 #menu ul li ul li:active{
     background: black;
@@ -616,6 +637,156 @@ body{
 #menu ul li ul li a:active{
     color: whitesmoke;
 }
+.botonModificar{
+    background-color: #FF2A74;
+    cursor: pointer;
+    float: right;
+    border: 0px solid black;
+    border-radius: 50%;
+    width: 12%;
+    height: 5vh;
+    margin: 0.7% 1% 0 -20%;
+    box-sizing: border-box;
+}
+.botonModificar:hover{
+    background-color: blue;
+}
+.botonModificar:active{
+    background-color: whitesmoke;
+}
+.inputModificar{
+    padding: 15px !important;
+    font-family: 'Letra Redondeada' !important;
+    font-size: x-small !important;
+    height: 4vh !important;
+    width: 80% !important;
+    margin: 1% 0 0 0 !important;
+}
+
+/* Administrador */
+.botonAdmin{
+    float: right;
+    height: 7.7vh !important;
+    box-sizing: border-box;
+    width: 5% !important;
+    margin: -4.8% 5% 0 0 !important;
+    height: 98%;
+    width: 10%;
+}
+.imageAdmin{
+    width: 100%;
+    height: 100%;
+}
+.imageAdmin:hover{
+    filter: invert(1);
+}
+#menu2{
+    width: 100%;
+    height: 100%;
+    float: right;
+    position: relative;
+    box-sizing: border-box;
+    border: 0px solid black;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+#menu2 ul{
+    background-color: whitesmoke;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+#menu2 ul a{
+    display: block;
+    color: black;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: 15px;
+    padding: 10px;
+    font-family: 'Letra Recta';
+    letter-spacing: 1px;
+}
+#menu2 ul li{
+    position: relative;
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+#menu2 ul ul{
+    display: none;
+    position: absolute;
+    top: 70%;
+    right: 0;
+    padding: 0;
+    z-index: 3;
+}
+#menu2 ul ul li{
+    float: none;
+    width: 140px;
+    text-align: left !important;
+}
+#menu2 ul ul a{
+    line-height: 100%;
+    padding: 10px 15px;
+}
+#menu2 ul ul ul{
+    display: none;
+    position: absolute;
+    top: 0%;
+    right: 100%;
+    padding: 0;
+    z-index: 4;
+}
+#menu2 ul ul ul li{
+    float: none;
+    width: 300px;
+    padding: 10px;
+}
+#menu2 ul li:hover > ul{
+    display: block;
+}
+#menu2 ul li ul li:hover{
+    background: rgb(192, 192, 192);
+}
+#menu2 ul li ul li ul li:hover{
+    background: whitesmoke;
+}
+#menu2 ul li ul li ul li:active{
+    background: whitesmoke;
+}
+#menu2 ul li ul li:active{
+    background: black;
+}
+#menu2 ul li ul li a:active{
+    color: whitesmoke;
+}
+.regresarGrupo{
+    width: 98% !important;
+    text-decoration: none;
+    color: whitesmoke;
+    padding: 1% 35%;
+}
+.regresarGrupo:hover{
+    color: black;
+}
+.regresarGrupo:active{
+    color: black;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /* agregar usuario */
 .tituloAgregar{
