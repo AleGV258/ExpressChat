@@ -43,6 +43,33 @@
                     <div class="nombreConversacion">
                         <% for(chatactual of chatActual){ %>
                             <h1 class="titulo"><%= chatactual.NombreChat %></h1>
+                            <% for(admin of administrador){ %>
+                                    <% if(admin.Administrador === 'A'){ %>
+                                        <div class="botonAdmin">
+                                            <nav id="menu2">
+                                                <ul>
+                                                    <li><img src="/images/masopciones.png" class="imageAdmin">
+                                                        <ul>
+                                                            <li><a onclick="window.location.href = 'EliminarChat/<%= chatactual.IdChat %>'">Eliminar</a></li>
+                                                            <li><a>Modificar</a>
+                                                                <ul>
+                                                                    <li>
+                                                                        <form action="ModificarChat/<%= chatactual.IdChat %>" method="get" class="modificarSeccion">
+                                                                            <input type="text" name="TextoChatModificar" size="5" placeholder="Escribe el nuevo nombre del chat ..." required class="inputModificar">
+                                                                            <button type="submit" value="Listo" class="botonModificar"><img src="/images/enviar.png" class="imageEnviar"></button>   
+                                                                        </form>                                                  
+                                                                    </li>
+                                                                </ul>
+                                                            </li>                                                    
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    <% }; %>
+                                <% break; %> 
+                            <% }; %>
+                            <% break; %> 
                         <% }; %>     
                     </div>
                     <div id="scroll">            
@@ -51,21 +78,21 @@
                                 <div class="mensajePropio" name="">
                                     <nav id="menu">
                                         <ul>
-                                          <li><img src="/images/masopciones.png" class="imageMas">
-                                            <ul>
-                                              <li><a>Modificar</a>
+                                            <li><img src="/images/masopciones.png" class="imageMas">
                                                 <ul>
-                                                    <li>
-                                                    <form action="ModificarMensaje/<%= mensaje.IdMensaje %>" method="">
-                                                        <input type="text" name="TextoMensajeModificar" size="10" placeholder="Escribe el nuevo mensaje ..." required>
-                                                        <button type="submit" value="Listo" class="botonEnviar"><img src="/images/enviar.png" class="imageEnviar"></button>   
-                                                    </form>                                                  
+                                                    <li><a onclick="window.location.href = 'EliminarMensaje/<%= mensaje.IdMensaje %>'">Eliminar</a></li>
+                                                    <li><a>Modificar</a>
+                                                        <ul>
+                                                            <li>
+                                                                <form action="ModificarMensaje/<%= mensaje.IdMensaje %>" method="get" class="modificarSeccion">
+                                                                    <input type="text" name="TextoMensajeModificar" size="5" placeholder="Escribe el nuevo mensaje ..." required class="inputModificar">
+                                                                    <button type="submit" value="Listo" class="botonModificar"><img src="/images/enviar.png" class="imageEnviar"></button>   
+                                                                </form>                                                  
+                                                            </li>
+                                                        </ul>
                                                     </li>                                                    
                                                 </ul>
-                                              </li>
-                                              <li><a onclick="window.location.href = 'EliminarMensaje/<%= mensaje.IdMensaje %>'">Eliminar</a></li>
-                                            </ul>
-                                          </li>
+                                            </li>
                                         </ul>
                                     </nav>
                                     <h2 class="usuarioMensaje" style="margin-block-end: 0%;"><%= mensaje.Nombre %></h2><br>
@@ -75,7 +102,6 @@
                                 <div class="esqPropio"></div>
                             <% }else{ %>
                                 <div class="mensajeOtro" name="">
-                                    
                                     <h2 class="usuarioMensaje" style="margin-block-end: 0%;"><%= mensaje.Nombre %></h2><br>
                                     <h2 class="textoMensaje"><%= mensaje.Texto %></h2><br>
                                     <h2 class="fechaMensaje"><%= mensaje.Fecha %></h2><br>
@@ -85,7 +111,7 @@
                         <% }; %>
                     </div><br>
                     <div class="escribirMensaje">
-                        <form action="enviarMensaje/<%= mensaje.IdChat %>/<%= actual %>" method="post">
+                        <form action="enviarMensaje/<%= idChatActual %>/<%= actual %>" method="post">
                             <input type="text" name="mensajeEscrito" size="10" placeholder="Escribe un mensaje ..." required class="escribirMensajeInput">
                             <button type="submit" value="Enviar" class="botonEnviar"><img src="/images/enviar.png" class="imageEnviar"></button>
                         </form>
@@ -95,6 +121,6 @@
         </div>
     </body>
     <script>
-        document.getElementById('scroll').scrollTop = 99999999999999999999999;
+        document.getElementById('scroll').scrollTop = 99999999999999999999999999999999999999;
     </script>
 </html>
