@@ -38,9 +38,11 @@ app.get('/Registro.ejs', (req, res) => {
   res.render('Registro.ejs', { validacion: 'N' });
 })
 
-app.post('/ExpressChat', (req, res) => {
+
+app.post('/Login', (req, res) => {
   let correo = req.body.correo;
   let contrasena = req.body.contrasena;
+  
   var idusuario;
   var admin;
   //autentificacion                                
@@ -57,24 +59,34 @@ app.post('/ExpressChat', (req, res) => {
         if (correo == row.Correo && contrasena == row.Contrasena) {
           idusuario = row.IdUsuario;
           admin = row.Administrador;
-          sql = 'SELECT * FROM Chats WHERE IdChat IN (SELECT IdChat FROM Participantes WHERE IdUsuario = ?);'
-          db.all(sql, [idusuario], (err, rows) => {
-            if (err) {
-              res.status(400).json({ "error": err.message });
-              return;
-            } else {
-              req.session.id_Usuario = idusuario
-              req.session.admon = admin;
-              res.status(200);
-              res.render('Chat.ejs', { chats: rows });
-            }
-          })
+          req.session.id_Usuario = idusuario
+          req.session.admon = admin;
+          res.status(200);
+          res.redirect('/ExpressChat');
+          //res.send('<script>window.location.href="/ExpressChat";</script>');
+          
         } else {
           res.status(400);
           res.render('index.ejs', { validacion: 'I' })
         }
       }
 
+    }
+  })
+})
+
+app.get('/ExpressChat', (req, res) => {
+  console.log('Entra')
+  var idUsuarioActual = req.session.id_Usuario;
+  sql = 'SELECT * FROM Chats WHERE IdChat IN (SELECT IdChat FROM Participantes WHERE IdUsuario = ?);';
+  db.all(sql, [idUsuarioActual], (err, rows) => {
+    if (err) {
+      res.status(400).json({ "error": err.message });
+      console.log('Entra')
+      return;
+    } else {
+      res.status(200);
+      res.render('Chat.ejs', { chats: rows });
     }
   })
 })
@@ -177,22 +189,22 @@ app.post('/NuevoGrupo', function (req, res) {
           if (err) {
             res.status(400).json({ "error": err.message });
             return;
-          }else{
+          } else {
             db.all('SELECT * FROM Chats WHERE NombreChat = ? ORDER BY IdChat ASC;', [nombreGrupo], (err, chats) => {
-              if(err){
+              if (err) {
                 res.status(400).json({ "error": err.message });
                 return;
-              }else{
+              } else {
                 db.all('SELECT * FROM Usuarios WHERE IdUsuario != ?;', [idUsuarioActual], (err, infoUsuarios) => {
-                  if(err){
+                  if (err) {
                     res.status(400).json({ "error": err.message });
                     return;
-                  }else{
+                  } else {
                     db.run('INSERT INTO Participantes (IdChat, IdUsuario) VALUES (?, ?);', [idChat.IdChat, idUsuarioActual], (err, result2) => {
-                      if(err){
+                      if (err) {
                         res.status(400).json({ "error": err.message });
                         return;
-                      }else{
+                      } else {
                         res.render('participantesGrupo.ejs', { users: infoUsuarios, idChatAgregar: chats, nombreNuevoGrupo: nombreGrupo });
                       }
                     })
@@ -281,7 +293,7 @@ app.get('/Chat/EliminarChat/:IdChat', function (req, res) {
       return;
     } else {
       res.status(200);
-      res.redirect('../../../');
+      res.redirect('/ExpressChat');
     }
   });
 });
