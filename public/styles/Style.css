@@ -237,8 +237,11 @@ body{
     cursor: pointer;
     text-align: center;
     justify-content: center;
+    box-sizing: border-box;
+    padding: 1%;
     display: flex;
     align-items: center;
+    word-wrap: break-word;
 }
 #usuarios2:hover{
     background-color: #FF82A2;
@@ -306,6 +309,7 @@ body{
 .regresar{
     text-decoration: none;
     color: whitesmoke;
+    letter-spacing: 1px;
 }
 .regresar:hover{
     color: black;
@@ -335,8 +339,7 @@ body{
 #regresar2:active{
     background: whitesmoke;
 }
-
-/* mensajes */
+/* Mensajes */
 .nombreConversacion{
     width: 100%;
     height: 8%;
@@ -441,7 +444,6 @@ body{
     float: left;
     text-align: right;
 }
-
 .escribirMensaje{ 
     box-sizing: border-box;
     width: 100%;
@@ -487,16 +489,17 @@ body{
 .imageEnviar:active{
     filter: invert(0);
 }
-
 /* Crear chats */
 #grupo{
     width: 70%;
     height: 100vh;
     text-align: center;
     padding: 5%;
+    display: block;
     float: left;
     box-sizing: border-box;
     border: 2px solid black;
+    z-index: 1;
 }
 .tituloGrupo{
     width: 100%;
@@ -521,7 +524,6 @@ body{
     float: left;
     box-sizing: border-box;
 }
-
 /* Error 404 */
 .pagina{
     width: 100%;
@@ -556,8 +558,7 @@ body{
 #regresar404:active{
     background: whitesmoke;
 }
-
-/* menú modificar y eliminar */
+/* Menú modificar y eliminar */
 #menu{
     width: 5%;
     height: 10vh;
@@ -662,8 +663,30 @@ body{
     width: 80% !important;
     margin: 1% 0 0 0 !important;
 }
-
 /* Administrador */
+.nomEmailBusqueda{
+    width: 100%;
+    float: left;
+    text-align: center;
+    word-wrap: break-word;
+    box-sizing: border-box;
+}
+.derecha{
+    right: 0% !important;
+    display: none;
+    position: absolute;
+    top: 70%;
+    padding: 0;
+    z-index: 3;
+}
+.botonAdminBusqueda{
+    float: right;
+    height: 3.5vh !important;
+    box-sizing: border-box;
+    width: 5% !important;
+    margin: -24.5% 13.5% 0 0 !important;
+    width: 10%;
+}
 .botonAdmin{
     float: right;
     height: 7.6vh !important;
@@ -689,7 +712,6 @@ body{
     background-color: transparent;
     cursor: pointer;
 }
-
 #menu2 ul{
     background-color: whitesmoke;
     list-style: none;
@@ -772,22 +794,7 @@ body{
 .regresarGrupo:active{
     color: black;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* agregar usuario */
+/* Agregar usuario */
 .tituloAgregar{
     background-color: #FF2A74;
     color: whitesmoke;

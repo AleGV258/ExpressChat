@@ -16,7 +16,6 @@
                 </div>
                 <div id="scroll2">
                     <% if(typeof chats === 'undefined') { %>
-                        <!-- <h1>Bienvenido</h1> -->
                     <% }else{ %>                
                         <% for(chat of chats) { %>
                             <div id="usuarios" name="<%= chat.IdChat %>" onclick="window.location.href = 'Chat/<%= chat.IdChat %>'">
@@ -32,8 +31,8 @@
                         <% }; %>
                     <% }; %>
                 </div>
-                <div id="regresar" onclick="window.location.href ='/Salir'">
-                    Salir                    
+                <div id="regresar" onclick="window.location.href ='/Logout'">
+                    <a class="regresar">Salir</a>               
                 </div>
             </div>
             <div id="conversacion">
@@ -46,7 +45,7 @@
                             <% for(admin of administrador){ %>
                                     <% if(admin.Administrador === 'A'){ %>
                                         <div class="botonAdmin">
-                                            <nav id="menu2">
+                                            <nav id="menu">
                                                 <ul>
                                                     <li><img src="/images/masopciones.png" class="imageAdmin">
                                                         <ul>

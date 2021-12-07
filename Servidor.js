@@ -1,15 +1,12 @@
 const express = require('express');
 const app = express();
-//const path = require('path');
 const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3');
-const url = require('url');
 const session = require('express-session');
-const { Console } = require('console');
 
 const db = new sqlite3.Database("./public/database/expressDB.db", (err) => {
   if (err) {
-    console.log('No se puede conectar a la base de datos');
+    console.log('No se puede conectar a la base de datos\n');
     console.log(err)
   } else {
     console.log('Conectado a la base de datos\n');
@@ -38,15 +35,18 @@ app.get('/Registro.ejs', (req, res) => {
   res.render('Registro.ejs', { validacion: 'N' });
 })
 
+app.get('/Logout', function (req, res) {
+  req.session.destroy();
+  res.status(200);
+  res.redirect('/');
+});
 
 app.post('/Login', (req, res) => {
   let correo = req.body.correo;
   let contrasena = req.body.contrasena;
-
   var idusuario;
   var admin;
-  var nombre
-  //autentificacion                                
+  var nombre                        
   sql = 'SELECT * FROM Usuarios WHERE Correo = ?;';
   db.get(sql, [correo], (err, row) => {
     if (err) {
@@ -66,8 +66,6 @@ app.post('/Login', (req, res) => {
           req.session.nombre = nombre;
           res.status(200);
           res.redirect('/ExpressChat');
-          //res.send('<script>window.location.href="/ExpressChat";</script>');
-
         } else {
           res.status(400);
           res.render('index.ejs', { validacion: 'I' })
@@ -92,7 +90,7 @@ app.get('/ExpressChat', (req, res) => {
   })
 })
 
-app.post('/registro', (req, res) => {
+app.post('/Registro', (req, res) => {
   var reqBody = req.body;
   db.run('INSERT INTO Usuarios (Nombre, Correo, Contrasena, Administrador) VALUES(?, ?, ?, ?, ?);', [reqBody.nombre, reqBody.correo, reqBody.contrasena, 'U'], (err, result) => {
     if (err) {
@@ -107,6 +105,7 @@ app.post('/registro', (req, res) => {
 
 app.get('/resultadosBusqueda', (req, res) => {
   let usuario = req.query.usuario;
+  var admin = req.session.admon
   var IdUsuarioActual = req.session.id_Usuario;
   sql = 'SELECT * FROM Usuarios WHERE Nombre LIKE ? AND IdUsuario <> ?;';
   db.all(sql, ['%' + usuario + '%', IdUsuarioActual], (err, rows) => {
@@ -115,18 +114,16 @@ app.get('/resultadosBusqueda', (req, res) => {
       return;
     } else {
       res.status(200);
-      res.render('resultadosBusqueda.ejs', { users: rows, usuario: usuario });
+      res.render('resultadosBusqueda.ejs', { users: rows, usuario: usuario, administrador: admin });
     }
   })
 })
 
 app.get('/NuevoChat/:idUsuario/:nombre', function (req, res) {
-  console.log('Funciona')
   var idUsuario = req.params.idUsuario;
   var nombre = req.params.nombre;
   var nombreUsuarioActual = req.session.nombre;
   var idUsuarioActual = req.session.id_Usuario;
-
   var nombreChat = nombreUsuarioActual + ' - ' + nombre;
   var nombreChat2 = nombre + ' - ' + nombreUsuarioActual;
   db.get('SELECT * FROM Chats WHERE NombreChat = ? OR NombreChat = ? ORDER BY IdChat ASC LIMIT 1;', [nombreChat, nombreChat2], (err, row) => {
@@ -136,7 +133,7 @@ app.get('/NuevoChat/:idUsuario/:nombre', function (req, res) {
     } else {
       if (typeof row === 'undefined') {
         console.log('No encontro un chat con el usuario')
-        db.run('INSERT INTO Chats (IdChat, NombreChat) VALUES( ?, ?);', [, nombreChat], (err, result) => {
+        db.run('INSERT INTO Chats (IdChat, NombreChat) VALUES(?, ?);', [, nombreChat], (err, result) => {
           if (err) {
             res.status(400).json({ "error": err.message });
             return;
@@ -146,7 +143,6 @@ app.get('/NuevoChat/:idUsuario/:nombre', function (req, res) {
                 res.status(400).json({ "error": err.message });
                 return;
               } else {
-
                 db.run('INSERT INTO Participantes (IdChat, IdUsuario) VALUES (?, ?);', [row.IdChat, idUsuario], (err, result2) => {
                   if (err) {
                     res.status(400).json({ "error": err.message });
@@ -159,7 +155,6 @@ app.get('/NuevoChat/:idUsuario/:nombre', function (req, res) {
                     return;
                   }
                 })
-                
                 direccion = '/Chat/' + row.IdChat;
                 res.redirect(direccion);
               }
@@ -168,15 +163,11 @@ app.get('/NuevoChat/:idUsuario/:nombre', function (req, res) {
         });
       } else {
         console.log('Si encontro ya un chat con el usuario')
-
         direccion = '/Chat/' + row.IdChat;
         res.redirect(direccion);
       }
     }
   })
-
-
-
 });
 
 app.get('/Chat/:idChat', function (req, res) {
@@ -184,12 +175,12 @@ app.get('/Chat/:idChat', function (req, res) {
   var usuarioActual = req.session.id_Usuario;
   sql = 'SELECT * FROM Chats c, Usuarios u, Participantes p WHERE c.IdChat = p.IdChat AND u.IdUsuario = p.IdUsuario AND u.IdUsuario = ? ORDER BY c.IdChat ASC;';
   db.all(sql, [usuarioActual], (err, comprobar) => {
-    if (err) {
+    if(err){
       res.status(400).json({ "error": err.message });
       return;
-    } else {
+    }else{
       comprobar.forEach((fila) => {
-        if (fila.IdChat == idChat) {
+        if(fila.IdChat == idChat) {
           sql = 'SELECT * FROM Mensajes m, Usuarios u WHERE m.IdChat = ? AND m.IdUsuario = u.IdUsuario ORDER BY m.IdMensaje ASC;';
           db.all(sql, [idChat], (err, rows) => {
             if (err) {
@@ -286,7 +277,6 @@ app.post('/agregarUsuario/:idChat/:idUsuario', (req, res) => {
   var idChat = req.params.idChat;
   var idUsuario = req.params.idUsuario;
   var idUsuarioActual = req.session.id_Usuario;
-
   sql = 'INSERT INTO Participantes (IdChat, IdUsuario) VALUES (?,?);';
   db.run(sql, [idChat, idUsuario], (err, result) => {
     if (err) {
@@ -377,16 +367,23 @@ app.get('/Chat/ModificarChat/:IdChat', function (req, res) {
   });
 });
 
+app.get('/EliminarUsuario/:IdUsuario', function (req, res) {
+  var IdUsuario = req.params.IdUsuario;
+  sql = 'DELETE FROM Usuarios WHERE IdUsuario = ?;';
+  db.run(sql, [IdUsuario], (err, result) => {
+    if (err) {
+      res.status(400).json({ "error": err.message });
+      return;
+    } else {
+      res.status(200);
+      res.redirect(req.get('referer'));
+    }
+  });
+});
+
 app.get('*', function (req, res) {
   res.status(404);
   res.render('Error404.ejs');
-});
-
-app.get('/Salir', function (req, res) {
-  req.session.destroy();
-  console.log('El nuevo salir')
-  res.status(200);
-  res.redirect('/');
 });
 
 app.listen(5000, () => { console.log('Servidor Web Iniciado'); });

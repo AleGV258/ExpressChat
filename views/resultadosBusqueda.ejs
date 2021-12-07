@@ -18,17 +18,31 @@
                 <div id="scroll3">
                     <% for(user of users){ %>
                         <div id="usuarios2" name="<%= user.IdUsuario %>" onclick="window.location.href = 'NuevoChat/<%= user.IdUsuario %>/<%= user.Nombre %>'">
-                            Nombre: <%= user.Nombre %><br>
-                            Email: <%= user.Correo %>
+                            <div class="nomEmailBusqueda">
+                                Nombre: <%= user.Nombre %><br>
+                                Email: <%= user.Correo %>
+                            </div>
                         </div>
+                        <% if(administrador === 'A'){ %>
+                            <div class="botonAdminBusqueda">
+                                <nav id="menu2">
+                                    <ul>
+                                        <li><img src="/images/masopciones.png" class="imageAdmin">
+                                            <ul class="derecha">
+                                                <li><a onclick="window.location.href = '/EliminarUsuario/<%= user.IdUsuario %>'">Eliminar</a></li>                                                 
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        <% }; %>
                     <% }; %>
                 </div>
                 <div id="regresar2">
-                    <!-- falta que regrese a los chats -->
                     <a href="javascript:history.back(-1);" class="regresar">Chats</a>
                 </div>
-                <div id="regresar2" onclick="window.location.href ='/Salir'">
-                    Salir                    
+                <div id="regresar2" onclick="window.location.href ='/Logout'">
+                    <a class="regresar">Salir</a>
                 </div>
             </div>
             <div id="grupo">
