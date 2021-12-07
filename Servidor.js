@@ -382,6 +382,14 @@ app.get('*', function (req, res) {
   res.render('Error404.ejs');
 });
 
+app.get('/Salir', function (req, res) {
+  
+  req.session.destroy();
+  console.log('El nuevo salir')
+  res.status(200);
+  res.redirect('/');
+});
+
 app.listen(5000, () => { console.log('Servidor Web Iniciado'); });
 
 
