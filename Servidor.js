@@ -42,9 +42,10 @@ app.get('/Registro.ejs', (req, res) => {
 app.post('/Login', (req, res) => {
   let correo = req.body.correo;
   let contrasena = req.body.contrasena;
-  
+
   var idusuario;
   var admin;
+  var nombre
   //autentificacion                                
   sql = 'SELECT * FROM Usuarios WHERE Correo = ?;';
   db.get(sql, [correo], (err, row) => {
@@ -59,12 +60,14 @@ app.post('/Login', (req, res) => {
         if (correo == row.Correo && contrasena == row.Contrasena) {
           idusuario = row.IdUsuario;
           admin = row.Administrador;
+          nombre = row.Nombre;
           req.session.id_Usuario = idusuario
           req.session.admon = admin;
+          req.session.nombre = nombre;
           res.status(200);
           res.redirect('/ExpressChat');
           //res.send('<script>window.location.href="/ExpressChat";</script>');
-          
+
         } else {
           res.status(400);
           res.render('index.ejs', { validacion: 'I' })
@@ -76,13 +79,11 @@ app.post('/Login', (req, res) => {
 })
 
 app.get('/ExpressChat', (req, res) => {
-  console.log('Entra')
   var idUsuarioActual = req.session.id_Usuario;
   sql = 'SELECT * FROM Chats WHERE IdChat IN (SELECT IdChat FROM Participantes WHERE IdUsuario = ?);';
   db.all(sql, [idUsuarioActual], (err, rows) => {
     if (err) {
       res.status(400).json({ "error": err.message });
-      console.log('Entra')
       return;
     } else {
       res.status(200);
@@ -93,7 +94,7 @@ app.get('/ExpressChat', (req, res) => {
 
 app.post('/registro', (req, res) => {
   var reqBody = req.body;
-  db.run('INSERT INTO Usuarios (Nombre, Correo, Contrasena, Administrador, Activo) VALUES(?, ?, ?, ?, ?);', [reqBody.nombre, reqBody.correo, reqBody.contrasena, 'U', 'S'], (err, result) => {
+  db.run('INSERT INTO Usuarios (Nombre, Correo, Contrasena, Administrador) VALUES(?, ?, ?, ?, ?);', [reqBody.nombre, reqBody.correo, reqBody.contrasena, 'U'], (err, result) => {
     if (err) {
       res.status(400);
       res.render('Registro.ejs', { validacion: 'I' });
@@ -106,8 +107,9 @@ app.post('/registro', (req, res) => {
 
 app.get('/resultadosBusqueda', (req, res) => {
   let usuario = req.query.usuario;
-  sql = 'SELECT * FROM Usuarios WHERE Nombre LIKE (?);';
-  db.all(sql, ['%' + usuario + '%'], (err, rows) => {
+  var IdUsuarioActual = req.session.id_Usuario;
+  sql = 'SELECT * FROM Usuarios WHERE Nombre LIKE ? AND IdUsuario <> ?;';
+  db.all(sql, ['%' + usuario + '%', IdUsuarioActual], (err, rows) => {
     if (err) {
       res.status(400).json({ "error": err.message });
       return;
@@ -117,6 +119,65 @@ app.get('/resultadosBusqueda', (req, res) => {
     }
   })
 })
+
+app.get('/NuevoChat/:idUsuario/:nombre', function (req, res) {
+  console.log('Funciona')
+  var idUsuario = req.params.idUsuario;
+  var nombre = req.params.nombre;
+  var nombreUsuarioActual = req.session.nombre;
+  var idUsuarioActual = req.session.id_Usuario;
+
+  var nombreChat = nombreUsuarioActual + ' - ' + nombre;
+  var nombreChat2 = nombre + ' - ' + nombreUsuarioActual;
+  db.get('SELECT * FROM Chats WHERE NombreChat = ? OR NombreChat = ? ORDER BY IdChat ASC LIMIT 1;', [nombreChat, nombreChat2], (err, row) => {
+    if (err) {
+      res.status(400).json({ "error": err.message });
+      return;
+    } else {
+      if (typeof row === 'undefined') {
+        console.log('No encontro un chat con el usuario')
+        db.run('INSERT INTO Chats (IdChat, NombreChat) VALUES( ?, ?);', [, nombreChat], (err, result) => {
+          if (err) {
+            res.status(400).json({ "error": err.message });
+            return;
+          } else {
+            db.get('SELECT * FROM Chats WHERE NombreChat = ? ORDER BY IdChat ASC LIMIT 1;', [nombreChat], (err, row) => {
+              if (err) {
+                res.status(400).json({ "error": err.message });
+                return;
+              } else {
+
+                db.run('INSERT INTO Participantes (IdChat, IdUsuario) VALUES (?, ?);', [row.IdChat, idUsuario], (err, result2) => {
+                  if (err) {
+                    res.status(400).json({ "error": err.message });
+                    return;
+                  }
+                })
+                db.run('INSERT INTO Participantes (IdChat, IdUsuario) VALUES (?, ?);', [row.IdChat, idUsuarioActual], (err, result2) => {
+                  if (err) {
+                    res.status(400).json({ "error": err.message });
+                    return;
+                  }
+                })
+                
+                direccion = '/Chat/' + row.IdChat;
+                res.redirect(direccion);
+              }
+            })
+          }
+        });
+      } else {
+        console.log('Si encontro ya un chat con el usuario')
+
+        direccion = '/Chat/' + row.IdChat;
+        res.redirect(direccion);
+      }
+    }
+  })
+
+
+
+});
 
 app.get('/Chat/:idChat', function (req, res) {
   var idChat = req.params.idChat;
@@ -175,6 +236,8 @@ app.post('/chat/enviarMensaje/:idChat/:idUsuario', function (req, res) {
     }
   });
 });
+
+
 
 app.post('/NuevoGrupo', function (req, res) {
   var nombreGrupo = req.body.nombreGrupo;
