@@ -383,7 +383,6 @@ app.get('*', function (req, res) {
 });
 
 app.get('/Salir', function (req, res) {
-  
   req.session.destroy();
   console.log('El nuevo salir')
   res.status(200);
@@ -391,46 +390,3 @@ app.get('/Salir', function (req, res) {
 });
 
 app.listen(5000, () => { console.log('Servidor Web Iniciado'); });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  //code servible para otras cosas
-  // let correo =req.body.correo;
-  // let contrasena = req.body.contrasena;
-  // let pagina='<!doctype html><html><head></head><body>';
-  //   pagina += `<a href="/mostrartabla?valor=${5}">El correo es ${correo} y la contraseña es ${contrasena}</a> - `;
-  //   pagina += '</body></html>';
-  //res.send(pagina);	
-
-
-
-
-  // let usuario = req.query.usuario;                //code servible para otras cosas
-  // let pagina = '<!doctype html><html><head></head><body>';
-  //         // let num = req.query.valor;
-  //         // num = parseInt(num);
-  //         // let pagina = '<!doctype html><html><head></head><body>';
-  //         // for (let x = 1; x <= 10; x++) {
-  //         //   let tabla = num * x;
-  //         //   pagina += `${num} * ${x} = ${tabla} <br>`;
-  //         // }
-  //         // pagina += '<a href="index.html">Retornar</a>';
-  //         // pagina += '</body></html>';
-  // pagina += `El usuario es ${usuario}`;
-  // pagina += '</body></html>';
-  // res.send(pagina);
