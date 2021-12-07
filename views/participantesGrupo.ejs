@@ -12,6 +12,7 @@
             <div class="todo">
                 <% for(agregar of idChatAgregar){ %>
                     <h1 class="tituloAgregar">Agregar participantes a <%= agregar.NombreChat %></h1>
+                    <% break; %>
                 <% }; %>
                 <% for(user of users){ %>
                     <div class="usuarioAgregar">
@@ -28,7 +29,7 @@
                     </div>
                 <% }; %>
                 <div class="regresar3">
-                    <a href="/" class="regresarGrupo">No crear grupo</a>
+                    <a href="/" class="regresarGrupo">Listo</a>
                 </div><br>
             </div>
         <% } %>

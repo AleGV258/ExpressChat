@@ -173,27 +173,31 @@ app.post('/NuevoGrupo', function (req, res) {
       return;
     } else {
       setTimeout(function () {
-        db.get('SELECT * FROM Chats WHERE nombrechat = ? ORDER by IdChat DESC LIMIT 1;', [nombreGrupo], (err, idChat) => {
+        db.get('SELECT * FROM Chats WHERE NombreChat = ? ORDER BY IdChat ASC;', [nombreGrupo], (err, idChat) => {
           if (err) {
             res.status(400).json({ "error": err.message });
             return;
-          } else {
-            console.log(idChat)
-            db.all('SELECT * FROM Usuarios WHERE IdUsuario != ?;', [idUsuarioActual], (err, infoUsuarios) => {
-              if (err) {
+          }else{
+            db.all('SELECT * FROM Chats WHERE NombreChat = ? ORDER BY IdChat ASC;', [nombreGrupo], (err, chats) => {
+              if(err){
                 res.status(400).json({ "error": err.message });
                 return;
-              } else {
-                res.status(200);
-                db.run('INSERT INTO Participantes (IdChat, IdUsuario) VALUES (?, ?);', [idChat.IdChat, idUsuarioActual], (err, result2) => {
-                  if (err) {
-                    console.log('no entra');
+              }else{
+                db.all('SELECT * FROM Usuarios WHERE IdUsuario != ?;', [idUsuarioActual], (err, infoUsuarios) => {
+                  if(err){
+                    res.status(400).json({ "error": err.message });
+                    return;
                   }else{
-                    console.log('entra');
-                    res.render('participantesGrupo.ejs', { users: infoUsuarios, idChatAgregar: idChat });
+                    db.run('INSERT INTO Participantes (IdChat, IdUsuario) VALUES (?, ?);', [idChat.IdChat, idUsuarioActual], (err, result2) => {
+                      if(err){
+                        res.status(400).json({ "error": err.message });
+                        return;
+                      }else{
+                        res.render('participantesGrupo.ejs', { users: infoUsuarios, idChatAgregar: chats, nombreNuevoGrupo: nombreGrupo });
+                      }
+                    })
                   }
                 })
-                
               }
             })
           }
