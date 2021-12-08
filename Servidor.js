@@ -90,16 +90,17 @@ app.get('/ExpressChat', (req, res) => {
   })
 })
 
-app.post('/Registro', (req, res) => {
+app.post('/registro', (req, res) => {
   var reqBody = req.body;
-  db.run('INSERT INTO Usuarios (Nombre, Correo, Contrasena, Administrador) VALUES(?, ?, ?, ?, ?);', [reqBody.nombre, reqBody.correo, reqBody.contrasena, 'U'], (err, result) => {
+  db.run('INSERT INTO Usuarios (Nombre, Correo, Contrasena, Administrador) VALUES(?, ?, ?, ?);', [reqBody.nombre, reqBody.correo, reqBody.contrasena, 'U'], (err, result) => {
     if (err) {
       res.status(400);
       res.render('Registro.ejs', { validacion: 'I' });
       return;
+    }else{
+      res.status(200);
+      res.render('Registro.ejs', { validacion: 'C' });
     }
-    res.status(200);
-    res.render('Registro.ejs', { validacion: 'C' });
   });
 })
 
