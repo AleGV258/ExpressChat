@@ -1,3 +1,4 @@
+/* General */
 *{ 
     padding: 0%; 
     margin: 0%;
@@ -489,7 +490,7 @@ body{
 .imageEnviar:active{
     filter: invert(0);
 }
-/* Crear chats */
+/* Crear Chats */
 #grupo{
     width: 70%;
     height: 100vh;
@@ -558,7 +559,7 @@ body{
 #regresar404:active{
     background: whitesmoke;
 }
-/* Menú modificar y eliminar */
+/* Menú Modificar y Eliminar */
 #menu{
     width: 5%;
     height: 10vh;
@@ -794,7 +795,7 @@ body{
 .regresarGrupo:active{
     color: black;
 }
-/* Agregar usuario */
+/* Agregar Usuario */
 .tituloAgregar{
     background-color: #FF2A74;
     color: whitesmoke;

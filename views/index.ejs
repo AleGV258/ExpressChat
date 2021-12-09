@@ -9,8 +9,10 @@
     <div class="barranegra">
       <h1 class="titulo">ExpressChat</h1>
     </div>
+    <!-- Validación para saber si el inicio de sesión fue válido -->
     <% if(validacion === 'C'){ %>
       <div class="valido" style="margin: 2% 10% -3% 10%;">¡Bienvenido a ExpressChat!</div>
+    <!-- Validación para saber si el inicio de sesión fue inválido -->
     <% }else if(validacion === 'I'){ %>
       <div class="novalido" style="margin: 2% 10% -3% 10%;">¡Error, correo o contraseña incorrectos!</div>
     <% }; %>
@@ -18,12 +20,14 @@
       <div>
         <h1>Inicio de sesión</h1>
       </div>
+      <!-- Inputs para validar las credenciales dentro del servidor y que pueda iniciar sesión -->
       <form action="/Login" method="post">
         <label for="">Ingrese el Correo:</label><br>
         <input type="email" name="correo" size="10" placeholder="Correo" required><br>
         <label for="">Ingrese la Contraseña:</label><br>
         <input type="password" name="contrasena" size="10" placeholder="Contraseña" required><br>
         <input type="submit" value="Entrar"><br>
+        <!-- Redireccionamiento a la página de registro -->
         <a href="./Registro.ejs">¿No tienes una cuenta? ¡Comienza a chatear ahora!</a>
       </form>
     </div>

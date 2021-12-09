@@ -9,26 +9,32 @@
         <div class="todo">
             <div id="chats">
                 <div id="buscador">
+                    <!-- Input para buscar un usuario en específico -->
                     <form action="resultadosBusqueda" method="">
                         <input type="text" name="usuario" size="10" id="barraBuscar" placeholder="Busca un chat..."><br>
                         <button type="submit" value="buscar" id="botonBuscar"><img src="/images/search.png" class="image"></button>
                     </form>
                 </div>
+                <!-- Se coloca el usuario que se busca -->
                 <div id="result">Resultados de búsqueda: <%= usuario %></div>
                 <div id="scroll3">
+                    <!-- Se despliega cada usuario encontrado que coincide con lo buscado por el usuario actual -->
                     <% for(user of users){ %>
                         <div id="usuarios2" name="<%= user.IdUsuario %>" onclick="window.location.href = 'NuevoChat/<%= user.IdUsuario %>/<%= user.Nombre %>'">
-                            <div class="nomEmailBusqueda">
+                            <!-- Se coloca un div con el nombre y correo del usuario encontrado -->
+                            <div class="nomEmailBusqueda"> 
                                 Nombre: <%= user.Nombre %><br>
                                 Email: <%= user.Correo %>
                             </div>
                         </div>
+                        <!-- Se verifica si el usuario actual es administrador o no -->
                         <% if(administrador === 'A'){ %>
                             <div class="botonAdminBusqueda">
                                 <nav id="menu2">
                                     <ul>
                                         <li><img src="/images/masopciones.png" class="imageAdmin">
                                             <ul class="derecha">
+                                                <!-- Se despliega la opción de eliminar al usuario encontrado -->
                                                 <li><a onclick="window.location.href = '/EliminarUsuario/<%= user.IdUsuario %>'">Eliminar</a></li>                                                 
                                             </ul>
                                         </li>
@@ -38,17 +44,27 @@
                         <% }; %>
                     <% }; %>
                 </div>
+                <!-- Regresa a la página anterior -->
                 <div id="regresar2">
                     <a href="javascript:history.back(-1);" class="regresar">Chats</a>
                 </div>
+                <!-- Sale y destruye la sesion del usaurio actual -->
                 <div id="regresar2" onclick="window.location.href ='/Logout'">
                     <a class="regresar">Salir</a>
                 </div>
             </div>
             <div id="grupo">
+                <!-- Validación para saber si la creación del grupo fue correcto -->
+                <% if(validacion === 'C'){ %>
+                    <div class="valido">¡El grupo se ha creado correctamente!</div>
+                <!-- Validación para saber si la creación del grupo fue incorrecto -->
+                <% }else if(validacion === 'I'){ %>
+                    <div class="novalido">¡Error al crear el grupo, nombre ya en uso!</div>
+                <% }; %>
                 <div>
                     <h1 class="tituloGrupo">Crear nuevo chat grupal</h1>
                 </div>
+                <!-- Input para mandar el nombre de un nuevo chat que se desea crear -->
                 <form action="NuevoGrupo" method="post">
                     <label for="" class="textoGrupo">Ingrese el nombre del grupo:</label><br>
                     <input type="text" name="nombreGrupo" size="10" placeholder="Nombre del grupo ..." required class="inputGrupo"><br>

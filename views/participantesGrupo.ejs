@@ -6,20 +6,24 @@
         <title>Agregar Usuarios</title>
     </head>
     <body>
+        <!-- Se valida que el parámetro de usuarios no sea indefinido -->
         <% if(typeof users === 'undefined'){ %>
-            <% location.href('./Error404.ejs'); %>
         <% }else{ %>       
             <div class="todo">
+                <!-- Se selecciona cada usuario que se puede agregar como participante a un chat -->
                 <% for(agregar of idChatAgregar){ %>
                     <h1 class="tituloAgregar">Agregar participantes a <%= agregar.NombreChat %></h1>
                     <% break; %>
                 <% }; %>
+                <!-- Se seleccionan los datos de los usuarios que pueden ser agregados a un chat -->
                 <% for(user of users){ %>
                     <div class="usuarioAgregar">
                         <div class="usuarioAgregar2">
+                            <!-- Se despliegan los nombres y correos de los usuarios -->
                             <h1 class="textoAgregar">Nombre: <%= user.Nombre %></h1>
                             <h1 class="textoAgregar">Email: <%= user.Correo %></h1>
                         </div>
+                        <!-- Se despliega un botoón para mandar la información del usuario que se desea agregar al chat -->
                         <% for(agregar of idChatAgregar){ %>
                             <form action="/agregarUsuario/<%= agregar.IdChat %>/<%= user.IdUsuario %>" method="post" class="agregar">
                             <button type="submit" class="botonAgregar">Agregar</button>
@@ -28,6 +32,7 @@
                         <% }; %>
                     </div>
                 <% }; %>
+                <!-- Redireccionamiento a la página principal del usuario actual, donde tiene todos los chats -->
                 <div class="regresar3">
                     <a href="/ExpressChat" class="regresarGrupo">Listo</a>
                 </div><br>

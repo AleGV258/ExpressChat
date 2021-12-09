@@ -9,8 +9,10 @@
       <div class="barranegra">
         <h1 class="titulo">ExpressChat</h1>
       </div>
+      <!-- Validación para saber si el registro fue correcto -->
       <% if(validacion === 'C'){ %>
         <div class="valido">¡El usuario a sido registrado correctamente!</div>
+      <!-- Validación para saber si el registro fue incorrecto -->
       <% }else if(validacion === 'I'){ %>
         <div class="novalido">¡Error al registrar el usuario, porfavor revisa los datos proporcionados!</div>
       <% }; %>
@@ -18,6 +20,7 @@
         <div>
           <h1>Registro</h1>
         </div>
+        <!-- Inputs para mandar y registrar a un nuevo usuario dentro de la base de datos -->
         <form action="/registro" method="post">
           <label for="">Ingrese el Nombre:</label><br>
           <input type="text" name="nombre" size="10" placeholder="Nombre" required><br>
@@ -26,6 +29,7 @@
           <label for="">Ingrese la Contraseña:</label><br>
           <input type="password" name="contrasena" size="10" placeholder="Contraseña" required><br>
           <input type="submit" value="Registrar"><br>
+          <!-- Redireccionamiento a la página de login -->
           <a href="./">¿Ya tienes una cuenta? ¡Ingresa para chatear!</a>
         </form>
       </div>
